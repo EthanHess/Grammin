@@ -36,19 +36,30 @@ class StoryUploadViewController: UIViewController {
         return cnb
     }()
     
-    var fontAwesomeContainer : UIImageView = {
+    var fontAwesomeContainerLeft : UIImageView = {
+        let fac = UIImageView()
+        return fac
+    }()
+    
+    var fontAwesomeContainerRight : UIImageView = {
         let fac = UIImageView()
         return fac
     }()
        
-    
-    //Add font awesome
     var customNavBarLeftTapGestureView : UIView = {
         let cnb = UIView()
         cnb.isUserInteractionEnabled = true
         cnb.backgroundColor = .clear
         return cnb
     }()
+    
+    var customNavBarRightTapGestureView : UIView = {
+        let cnb = UIView()
+        cnb.isUserInteractionEnabled = true
+        cnb.backgroundColor = .clear
+        return cnb
+    }()
+    
     
     //Buttons (should subclass)
     
@@ -57,7 +68,7 @@ class StoryUploadViewController: UIViewController {
     
     let mediaButton: UIButton = {
         let vButton = UIButton(type: .system)
-        vButton.addTarget(self, action: #selector(handleVideo), for: .touchUpInside)
+        //vButton.addTarget(self, action: #selector(handleVideo), for: .touchUpInside)
         vButton.setTitle("Add Photo/Video", for: .normal)
         vButton.setTitleColor(.white, for: .normal)
         return vButton
@@ -121,6 +132,7 @@ class StoryUploadViewController: UIViewController {
         viewStylizer(theView: mediaButton, radius: 5, backgroundColor: Colors().neptuneBlue)
         mediaButton.layer.borderColor = UIColor.white.cgColor
         mediaButton.layer.borderWidth = 1
+        mediaButton.addTarget(self, action: #selector(handleVideo), for: .touchUpInside)
         
         self.perform(#selector(subviewsForNavBar), with: nil, afterDelay: 0.25)
     }
@@ -129,30 +141,70 @@ class StoryUploadViewController: UIViewController {
         //Left --- Right
         let navWH = customNavBar.frame.size.width / 2
         let navH = customNavBar.frame.size.height
-            
+        
+        //Font Awesome gesture handlers
         customNavBarLeftTapGestureView.frame = CGRect(x: 0, y: 0, width: navWH, height: navH)
         customNavBar.addSubview(customNavBarLeftTapGestureView)
         
         let navGestureLeft = UITapGestureRecognizer(target: self, action: #selector(handleDismiss))
         customNavBarLeftTapGestureView.addGestureRecognizer(navGestureLeft)
         
-        fontAwesomeContainer.frame = CGRect(x: 10, y: 0, width: 50, height: 50)
-        customNavBarLeftTapGestureView.addSubview(fontAwesomeContainer)
+        customNavBarRightTapGestureView.frame = CGRect(x: navWH, y: 0, width: navWH, height: navH)
+        customNavBar.addSubview(customNavBarRightTapGestureView)
         
-        fontAwesomeContainer.image = UIImage.fontAwesomeIcon(name: .github, style: .brands, textColor: .white, size: CGSize(width: 40, height: 40))
+        let navGestureRight = UITapGestureRecognizer(target: self, action: #selector(handleUpload))
+        customNavBarRightTapGestureView.addGestureRecognizer(navGestureRight)
+        
+        //Font Awesome for custom nav bar
+        fontAwesomeContainerLeft.frame = CGRect(x: 10, y: 0, width: 50, height: 50)
+        customNavBarLeftTapGestureView.addSubview(fontAwesomeContainerLeft)
+        
+        fontAwesomeContainerLeft.image = UIImage.fontAwesomeIcon(name: .github, style: .brands, textColor: .white, size: CGSize(width: 40, height: 40))
+        
+        fontAwesomeContainerRight.frame = CGRect(x: navWH - 60, y: 0, width: 50, height: 50)
+        customNavBarRightTapGestureView.addSubview(fontAwesomeContainerRight)
+        
+        fontAwesomeContainerRight.image = UIImage.fontAwesomeIcon(name: .mask, style: .brands, textColor: .white, size: CGSize(width: 40, height: 40))
         
         //And scroll view / story view
         optionsScrollContainer.scrollSetupWrapper()
         storyContainer.viewSetup()
     }
     
+    //MARK: Can also be extension, probably better
     fileprivate func viewStylizer(theView: UIView, radius: CGFloat, backgroundColor: UIColor) {
         theView.layer.masksToBounds = true
         theView.layer.cornerRadius = radius
         theView.backgroundColor = backgroundColor
     }
     
-    //Handlers
+    //MARK: UI animations
+    
+    fileprivate func shouldPulsate() -> Bool {
+        return videoURL != nil || chosenData != nil
+    }
+    
+    fileprivate func uploadPulsate() {
+        applyRemovePulsateAnimationFromView(fontAwesomeContainerRight, apply: shouldPulsate())
+    }
+    
+    fileprivate func applyRemovePulsateAnimationFromView(_ view: UIView, apply: Bool) {
+        if apply {
+            let animation = CABasicAnimation(keyPath: "transform.scale")
+            animation.toValue = 1.2
+            animation.duration = 1.0
+            let timing = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+            animation.timingFunction = timing
+            animation.autoreverses = true
+            animation.repeatCount = .infinity
+            view.layer.add(animation, forKey: "pulsing")
+            return
+        }
+        
+        view.layer.removeAllAnimations()
+    }
+    
+    //MARK: Handlers
     @objc fileprivate func handleDismiss() {
         self.dismiss(animated: true, completion: nil)
     }
@@ -172,6 +224,10 @@ class StoryUploadViewController: UIViewController {
     
     //Scroll to color subview in options container
     @objc fileprivate func handleColor() {
+        
+    }
+    
+    @objc fileprivate func handleUpload() {
         
     }
 
@@ -211,8 +267,9 @@ class StoryUploadViewController: UIViewController {
 //    }
 }
 
+typealias PickerFunctions = UIImagePickerControllerDelegate & UINavigationControllerDelegate
 
-extension StoryUploadViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension StoryUploadViewController : PickerFunctions {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         //TODO check media type
@@ -248,6 +305,8 @@ extension StoryUploadViewController : UIImagePickerControllerDelegate, UINavigat
 //                let resizedImage = GlobalFunctions.resizeImage(image: chosenImage, newHeight: self.view.frame.size.height)
                 self.chosenData = NSData(data: UIImageJPEGRepresentation(chosenImage, 1.0)!) as Data
                 storyContainer.addImage(image: chosenImage)
+                
+                uploadPulsate()
             }
         }
         if mediaType == "public.movie" {
@@ -265,6 +324,8 @@ extension StoryUploadViewController : UIImagePickerControllerDelegate, UINavigat
                 self.mediaType = "Video"
                 self.videoURL = chosenURL
                 storyContainer.videoSetup(url: chosenURL)
+                
+                uploadPulsate()
             }
         }
     }
