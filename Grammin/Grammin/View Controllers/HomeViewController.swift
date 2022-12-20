@@ -503,11 +503,25 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, HomePostCellDe
             Logger.log("No Nav")
             return
         }
+        //MARK: Move this to utils to not repeat code (DRY)
+        guard let uid = Auth.auth().currentUser?.uid else {
+            Logger.log("No UID")
+            return
+        }
         
-        let storyUploadVC = StoryUploadViewController()
-        storyUploadVC.modalPresentationStyle = .fullScreen
-        theNavVC.present(storyUploadVC, animated: true, completion: nil)
-        
+        StoryController.userHasStory(currentUID: uid) { exists in
+            if exists == true {
+                let storyWatchVC = StoryWatchViewController()
+                storyWatchVC.curUID = uid
+                storyWatchVC.modalPresentationStyle = .fullScreen
+                theNavVC.present(storyWatchVC, animated: true, completion: nil)
+            } else {
+                let storyUploadVC = StoryUploadViewController()
+                storyUploadVC.modalPresentationStyle = .fullScreen
+                theNavVC.present(storyUploadVC, animated: true, completion: nil)
+            }
+        }
+
         //Test for going to friend profile
         
 //        let userLayout = UICollectionViewFlowLayout()

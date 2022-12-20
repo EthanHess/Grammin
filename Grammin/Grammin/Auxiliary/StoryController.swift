@@ -8,6 +8,8 @@
 
 import UIKit
 
+typealias StoryDict = Dictionary<String, Any>
+
 class StoryController: NSObject {
     
     static func fetchStoriesOfFollowing(currentUserID: String, completion: @escaping ((_ stories: [Story]) -> Void)) {
@@ -18,16 +20,28 @@ class StoryController: NSObject {
         
     }
     
-    static func uploadStoryForUser(currentUID: String, storyDict: Dictionary<String, Any>, completion: @escaping ((_ success: Bool) -> Void)) {
+    static func userHasStory(currentUID: String, completion: @escaping ((_ exists: Bool) -> Void)) {
+        fDatabase.child(StoriesReference).child(currentUID).observe(.value) { snapshot in
+            completion(snapshot.exists())
+        }
+    }
+    
+    //Add Result type with err / data
+    static func uploadStoryForUser(currentUID: String, storyDict: StoryDict, completion: @escaping ((_ success: Bool) -> Void)) {
+        fDatabase.child(StoriesReference).child(currentUID).childByAutoId().setValue(storyDict, andPriority: nil) { err, ref in
+            print("--- Story set \(err != nil ? err!.localizedDescription : "") -- \(ref.key)")
+        }
+    }
+    
+    //Likely don't need anymore, the above way may be the simplest
+    static func uploadSegmentToStory(storyID: String, segDict: StoryDict, completion: @escaping ((_ success: Bool) -> Void)) {
         
     }
     
-    static func uploadSegmentToStory(storyID: String, segDict: Dictionary<String, Any>, completion: @escaping ((_ success: Bool) -> Void)) {
-        
-    }
-    
-    static func deleteStoryWithStoryID(storyID: String, completion: @escaping ((_ success: Bool) -> Void)) {
-        
+    static func deleteStoryWithStoryID(currentUID: String, storyID: String, completion: @escaping ((_ success: Bool) -> Void)) {
+        fDatabase.child(StoriesReference).child(currentUID).child(storyID).removeValue { err, ref in
+            print("--- Story removed \(err != nil ? err!.localizedDescription : "") -- \(ref.key)")
+        }
     }
     
     static func deleteSegmentWithSegmentID(storyID: String, segmentID: String, completion: @escaping ((_ success: Bool) -> Void)) {

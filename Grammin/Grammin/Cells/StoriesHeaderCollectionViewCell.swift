@@ -41,6 +41,7 @@ class StoriesHeaderCollectionViewCell: UICollectionViewCell {
         handleViewTapObservation(add: true)
     }
     
+    //MARK: Check here for story
     fileprivate func addMyImage() {
         guard let uid = Auth.auth().currentUser?.uid else {
             self.imageOnMainQueue(image: UIImage(named: "userFemaleBrunette")!)
@@ -49,11 +50,21 @@ class StoriesHeaderCollectionViewCell: UICollectionViewCell {
         FirebaseController.fetchUserWithUID(userID: uid) { (theUser) in
             if theUser != nil {
                 //User may not have image? add default
+                StoryController.userHasStory(currentUID: theUser!.uid) { exists in
+                    if exists == true {
+                        print("Has story!")
+                        //self.animateViewForMyStory()
+                    }
+                }
                 self.myImageView.loadImage(urlString: theUser!.profileImageUrl)
             } else {
                 self.imageOnMainQueue(image: UIImage(named: "userFemaleBrunette")!)
             }
         }
+    }
+    
+    fileprivate func animateViewForMyStory() {
+        //TODO imp.
     }
     
     fileprivate func imageOnMainQueue(image: UIImage) {

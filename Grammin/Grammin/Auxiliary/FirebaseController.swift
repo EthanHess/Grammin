@@ -54,6 +54,7 @@ class FirebaseController: NSObject {
     
     //MARK Storage (TODO Move to storage file "FirebaseStorageController", also organize code and move all storage functionality there)
     
+    //This is for profile image, will want another path for post / story / chat images
     static func uploadImageDataToFirebase(data: Data, path: String, completionString: @escaping  ((_ downloadURLString: String?) -> Void)) {
         
         let childString = NSString(format: "profile_image_%@", UUID().uuidString)
@@ -61,9 +62,9 @@ class FirebaseController: NSObject {
         
         let uploadTask = profilePicsRef.putData(data, metadata: nil) { (metadata, error) in
             if error != nil {
-                Logger.log("Error uploading: \(String(describing: error?.localizedDescription))")
+                Logger.log("Error uploading Profile Pic: \(String(describing: error?.localizedDescription))")
             } else {
-                Logger.log("Metadata: \(String(describing: metadata))")
+                Logger.log("Metadata Profile Pic: \(String(describing: metadata))")
             }
         }
         
@@ -91,6 +92,46 @@ class FirebaseController: NSObject {
             completionString(nil)
         }
         
-        //Add/Remove other observers
+        //Add/Remove other observers if needed
+    }
+    
+    static func uploadVideoDataToFirebase(url: URL, path: String, completionString: @escaping ((_ downloadURLString: String?) -> Void)) {
+        
+        let childString = NSString(format: "story_video_%@_%@", UUID().uuidString)
+        let storyVideoRef = fStorage.child("StoryVideos").child(path).child(childString as String)
+        
+        do {
+            let data = try Data(contentsOf: url)
+            let uploadTask = storyVideoRef.putData(data, metadata: nil) { (metadata, error) in
+                if error != nil {
+                    Logger.log("Error uploading SV: \(String(describing: error?.localizedDescription))")
+                } else {
+                    Logger.log("Metadata SV: \(String(describing: metadata))")
+                }
+            }
+            uploadTask.observe(.success) { (taskSnapshot) in
+                storyVideoRef.downloadURL(completion: { (downloadURL, error) in
+                    if error != nil {
+                        Logger.log("--- ERROR SV ---\(String(describing: error?.localizedDescription))")
+                        completionString(nil)
+                        return
+                    }
+                    if let completionURL = downloadURL?.absoluteString {
+                        Logger.log("--- DOWNLOAD URL SV --- \(completionURL)")
+                        completionString(completionURL)
+                    } else {
+                        completionString(nil)
+                    }
+                })
+            }
+            
+            uploadTask.observe(.failure) { (snapshot) in
+                Logger.log("--- FAILURE --- \(String(describing: snapshot.error))")
+                completionString(nil)
+            }
+        } catch let error {
+            print("Error converting story to data \(error.localizedDescription)")
+            completionString(nil)
+        }
     }
 }

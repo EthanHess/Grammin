@@ -227,7 +227,32 @@ class StoryUploadViewController: UIViewController {
         
     }
     
+    //TODO, can add collage of multiple videos / images
     @objc fileprivate func handleUpload() {
+        //Should maybe store to not have to repeat call
+        guard let uid = Auth.auth().currentUser?.uid else {
+            Logger.log("No Auth")
+            return
+        }
+        if self.videoURL != nil {
+            let filename = "\(uid) \(NSUUID().uuidString)"
+            FirebaseController.uploadVideoDataToFirebase(url: self.videoURL!, path: filename) { downloadURLString in
+                if downloadURLString != nil {
+                    let dict : StoryDict = ["storyDownloadURL": downloadURLString!,
+                                "storyMediaType": "video",
+                                "storyText": "This is a test!",
+                                "timestamp": NSDate().timeIntervalSince1970,
+                                "storyAuthorUID": uid]
+                    StoryController.uploadStoryForUser(currentUID: uid, storyDict: dict) { success in
+                        if success == true {
+                            //Pop back or allow them to upload another?
+                            //Would need [weak self] if this class retains StoryController or this block
+                            self.dismiss(animated: true)
+                        }
+                    }
+                }
+            }
+        }
         
     }
 

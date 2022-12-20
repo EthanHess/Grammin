@@ -85,6 +85,7 @@
 		277ADEB025FED86B001A5B42 /* SelectPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277ADEAF25FED86B001A5B42 /* SelectPhotoViewController.swift */; };
 		278445AB23CEC80900577E38 /* ChatUserRequestChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278445AA23CEC80900577E38 /* ChatUserRequestChoiceView.swift */; };
 		278EFE59242D971500C90B08 /* ChosenChatParticipantsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278EFE58242D971500C90B08 /* ChosenChatParticipantsContainer.swift */; };
+		278F57612952648E00BA6DAE /* StoryWatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278F57602952648E00BA6DAE /* StoryWatchViewController.swift */; };
 		2790EB16220A5E6100FBDC5C /* StoryUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2790EB15220A5E6100FBDC5C /* StoryUploadViewController.swift */; };
 		27A278B320B5E96F0054607A /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A278B220B5E96F0054607A /* MainTabBarController.swift */; };
 		27A278B520B5F5B90054607A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A278B420B5F5B90054607A /* Logger.swift */; };
@@ -203,6 +204,7 @@
 		277ADEAF25FED86B001A5B42 /* SelectPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoViewController.swift; sourceTree = "<group>"; };
 		278445AA23CEC80900577E38 /* ChatUserRequestChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUserRequestChoiceView.swift; sourceTree = "<group>"; };
 		278EFE58242D971500C90B08 /* ChosenChatParticipantsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChosenChatParticipantsContainer.swift; sourceTree = "<group>"; };
+		278F57602952648E00BA6DAE /* StoryWatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryWatchViewController.swift; sourceTree = "<group>"; };
 		2790EB15220A5E6100FBDC5C /* StoryUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryUploadViewController.swift; sourceTree = "<group>"; };
 		27A278B220B5E96F0054607A /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		27A278B420B5F5B90054607A /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				273752EB218FED6E005CB574 /* SharePhotoViewController.swift */,
 				2739B5FE21D9CAC6009815FD /* SearchUserViewController.swift */,
 				2790EB15220A5E6100FBDC5C /* StoryUploadViewController.swift */,
+				278F57602952648E00BA6DAE /* StoryWatchViewController.swift */,
 				273310D42277B62400BE4019 /* AddDrawingViewController.swift */,
 				273082172380B72200188170 /* MainChatsListViewController.swift */,
 				272B0D4423C0078E001807A7 /* ChatDetailViewController.swift */,
@@ -665,6 +668,7 @@
 				271D063E275E989D00140B9D /* HorizontalDotAnimator.swift in Sources */,
 				276F2B2A20B73FD500303E30 /* PhotoPreviewContainer.swift in Sources */,
 				273B097A21D5CB120025202B /* LikeController.swift in Sources */,
+				278F57612952648E00BA6DAE /* StoryWatchViewController.swift in Sources */,
 				27A278C120B621EB0054607A /* Colors.swift in Sources */,
 				274635D024591127003D1523 /* StoryContainer.swift in Sources */,
 				2742A0D92589AE150083D8AD /* NotificationsViewController.swift in Sources */,

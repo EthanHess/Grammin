@@ -14,6 +14,7 @@ let UsersReference = "Users"
 let FollowingReference = "Following"
 let PostsReference = "Posts"
 let LikesReference = "Likes"
+let StoriesReference = "Stories"
 
 // Notifications
 
