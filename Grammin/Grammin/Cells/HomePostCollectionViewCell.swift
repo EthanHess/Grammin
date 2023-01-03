@@ -53,7 +53,6 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     
     //TODO change images
     
-    //lazy = will not be used until needed
     lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "likeEmpty")?.withRenderingMode(.alwaysOriginal), for: .normal)

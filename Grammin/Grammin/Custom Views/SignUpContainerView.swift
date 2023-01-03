@@ -24,6 +24,8 @@ class SignUpContainerView: UIView {
     
     weak var delegate : SignUpContainerDelegate?
     
+    //MARK: 'self' refers to the method 'SignUpContainerView.self', which may be unexpected << Add target outside of self
+    
     let addPhotoButton: UIButton = {
         let image = UIImage(named: "mainCamera")
         let button = UIButton(type: .system)
@@ -134,13 +136,18 @@ class SignUpContainerView: UIView {
         
         //self.backgroundColor = UIColor.fromRGB(red: 0, green: 142, blue: 170)
         
-         let image = UIImage(named: "spacePurple")
-         let bgIV = UIImageView(frame: self.bounds)
-         bgIV.image = image
-         addSubview(bgIV)
-         sendSubview(toBack: bgIV)
-        
         setUpViews()
+        
+        perform(#selector(backgroundImage), with: nil, afterDelay: 0.25)
+    }
+    
+    // When frame is set
+    @objc fileprivate func backgroundImage() {
+        let image = UIImage(named: "spacePurple")
+        let bgIV = UIImageView(frame: self.bounds)
+        bgIV.image = image
+        addSubview(bgIV)
+        sendSubview(toBack: bgIV)
     }
     
     fileprivate func setUpViews() {

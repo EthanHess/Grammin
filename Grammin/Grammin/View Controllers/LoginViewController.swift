@@ -17,21 +17,9 @@ class LoginViewController: UIViewController {
     
     //Add UIBlur effect? Or is faded alpha of background enough?
     
+    var signUpContainerView: SignUpContainerView = {
+        let theView = SignUpContainerView()
     
-    //NOTE
-    
-    //Lazy var causing issues, replace
-    //https://stackoverflow.com/questions/48239822/uibutton-selector-is-not-working
-    
-    lazy var signUpContainerView: SignUpContainerView = {
-        
-        let width = self.view.frame.size.width - 20
-        let height = self.view.frame.size.height - 160
-        let yCoord = CGFloat(80)
-        let frame = CGRect(x: 10.0, y: yCoord, width: width, height: height)
-        
-        let theView = SignUpContainerView(frame: frame)
-        
         return theView
     }()
     
@@ -138,6 +126,12 @@ class LoginViewController: UIViewController {
     //Functions
     
     fileprivate func customViewConfig() { //Sign up view
+        
+        let width = self.view.frame.size.width - 20
+        let height = self.view.frame.size.height - 160
+        let yCoord = CGFloat(80)
+        let frame = CGRect(x: 10.0, y: yCoord, width: width, height: height)
+        signUpContainerView.frame = frame
         
         view.addSubview(signUpContainerView)
         view.bringSubview(toFront: signUpContainerView)

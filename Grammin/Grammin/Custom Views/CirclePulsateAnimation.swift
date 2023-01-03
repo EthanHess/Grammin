@@ -12,7 +12,8 @@ import FirebaseAuth
 //Inspired by Shazam
 class CirclePulsateAnimation: UIView {
 
-    //lazy var = don't get created until they are needed and are only computed once
+    //lazy var = don't get created until they are needed and are only computed once, not thread safe so use sparingly
+    
     lazy var mainImageView : PostCellImageView = {
         let iv = PostCellImageView()
         iv.backgroundColor = Colors().coolBlue
