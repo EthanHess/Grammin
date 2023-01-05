@@ -19,7 +19,7 @@ class SignUpViewController: UIViewController {
         let image = UIImage(named: "mainCamera")
         let button = UIButton(type: .system)
         button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleAddPhoto), for: .touchUpInside)
+        
         return button
     }()
     
@@ -30,8 +30,6 @@ class SignUpViewController: UIViewController {
         eField.borderStyle = .roundedRect
         eField.font = UIFont.systemFont(ofSize: 14)
         
-        eField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
-        
         return eField
     }()
     
@@ -41,7 +39,7 @@ class SignUpViewController: UIViewController {
         utf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         utf.borderStyle = .roundedRect
         utf.font = UIFont.systemFont(ofSize: 14)
-        utf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        
         return utf
     }()
     
@@ -52,7 +50,7 @@ class SignUpViewController: UIViewController {
         ptf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         ptf.borderStyle = .roundedRect
         ptf.font = UIFont.systemFont(ofSize: 14)
-        ptf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        
         return ptf
     }()
     
@@ -64,9 +62,7 @@ class SignUpViewController: UIViewController {
         button.layer.cornerRadius = 5
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.white, for: .normal)
-        
-        button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
-        
+
         button.isEnabled = false
         
         return button
@@ -218,6 +214,15 @@ class SignUpViewController: UIViewController {
         addPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         setupInputFields()
+        addTargets()
+    }
+    
+    fileprivate func addTargets() {
+        addPhotoButton.addTarget(self, action: #selector(handleAddPhoto), for: .touchUpInside)
+        emailTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        usernameTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        signUpButton.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
     }
 
     override func viewDidLoad() {
@@ -226,7 +231,6 @@ class SignUpViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         addViews()
-        setupInputFields()
     }
 
     override func didReceiveMemoryWarning() {
