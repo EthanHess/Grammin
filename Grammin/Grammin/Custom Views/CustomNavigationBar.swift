@@ -1,15 +1,15 @@
 //
-//  HorizontalDotAnimator.swift
+//  CustomNavigationBar.swift
 //  Grammin
 //
-//  Created by Ethan Hess on 12/6/21.
-//  Copyright © 2021 EthanHess. All rights reserved.
+//  Created by Ethan Hess on 1/5/23.
+//  Copyright © 2023 EthanHess. All rights reserved.
 //
 
 import UIKit
 
-//Loader (can also use custom loading class currently working on)
-class HorizontalDotAnimator: UIView {
+//TODO imp. w/ font awesome etc.
+class CustomNavigationBar: UIView {
 
     /*
     // Only override draw() if you perform custom drawing.

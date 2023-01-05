@@ -87,6 +87,7 @@
 		278EFE59242D971500C90B08 /* ChosenChatParticipantsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278EFE58242D971500C90B08 /* ChosenChatParticipantsContainer.swift */; };
 		278F57612952648E00BA6DAE /* StoryWatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278F57602952648E00BA6DAE /* StoryWatchViewController.swift */; };
 		2790EB16220A5E6100FBDC5C /* StoryUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2790EB15220A5E6100FBDC5C /* StoryUploadViewController.swift */; };
+		279A4F1E29677126002C3A6D /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279A4F1D29677126002C3A6D /* CustomNavigationBar.swift */; };
 		27A278B320B5E96F0054607A /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A278B220B5E96F0054607A /* MainTabBarController.swift */; };
 		27A278B520B5F5B90054607A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A278B420B5F5B90054607A /* Logger.swift */; };
 		27A278B920B612740054607A /* SelectPhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A278B820B612740054607A /* SelectPhotoCollectionViewController.swift */; };
@@ -206,6 +207,7 @@
 		278EFE58242D971500C90B08 /* ChosenChatParticipantsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChosenChatParticipantsContainer.swift; sourceTree = "<group>"; };
 		278F57602952648E00BA6DAE /* StoryWatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryWatchViewController.swift; sourceTree = "<group>"; };
 		2790EB15220A5E6100FBDC5C /* StoryUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryUploadViewController.swift; sourceTree = "<group>"; };
+		279A4F1D29677126002C3A6D /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
 		27A278B220B5E96F0054607A /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		27A278B420B5F5B90054607A /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		27A278B820B612740054607A /* SelectPhotoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCollectionViewController.swift; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 				27120D432682B3AE00BAB8E3 /* ChosenAssetsScrollView.swift */,
 				271D063B275E987D00140B9D /* CirclePulsateAnimation.swift */,
 				271D063D275E989D00140B9D /* HorizontalDotAnimator.swift */,
+				279A4F1D29677126002C3A6D /* CustomNavigationBar.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -676,6 +679,7 @@
 				276F2B2E20B7406800303E30 /* CustomDismisser.swift in Sources */,
 				27B9A94B21417865004C6A88 /* PostCellImageView.swift in Sources */,
 				273396F223D5FEE700F3D078 /* OptionsContainer.swift in Sources */,
+				279A4F1E29677126002C3A6D /* CustomNavigationBar.swift in Sources */,
 				276F2B2620B666FB00303E30 /* FacebookGoogleAuthViewController.swift in Sources */,
 				2756F12F20B8E98C009807B8 /* SignUpViewController.swift in Sources */,
 				2743606D244934FF00A793DB /* StorySegment.swift in Sources */,

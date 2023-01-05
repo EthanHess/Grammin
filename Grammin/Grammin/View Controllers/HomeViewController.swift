@@ -271,17 +271,18 @@ class HomeViewController: UICollectionViewController {
     }
     
     fileprivate func postFetchWrapper() {
-        self.followingUIDs.append(self.currentUser!.uid)
         self.getPostsWithFriendsArray(friendUIDS: self.followingUIDs)
     }
     
     fileprivate func getPostsWithFriendsArray(friendUIDS: [String]) {
         PostsController.fetchPostsOfThoseIFollow(myUID: self.currentUser!.uid, arrayOfWhoIFollow: friendUIDS) { (posts) in
-            self.posts = posts!
-            self.posts.sort(by: { (p1, p2) -> Bool in
-                return p1.timestamp.compare(p2.timestamp) == .orderedDescending
-            })
-            self.refresh()
+            if posts != nil {
+                self.posts = posts!
+                self.posts.sort(by: { (p1, p2) -> Bool in
+                    return p1.timestamp.compare(p2.timestamp) == .orderedDescending
+                })
+                self.refresh()
+            }
         }
     }
     
@@ -413,6 +414,7 @@ class HomeViewController: UICollectionViewController {
     }
     
     let testArray : [Story] = [Story(storyDict: ["" : ""]), Story(storyDict: ["" : ""])]
+    var storyArray : [Story] = [] //TODO set (stories of friends, not self)
     
     //Testing
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

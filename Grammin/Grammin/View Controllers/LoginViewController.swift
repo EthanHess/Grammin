@@ -47,7 +47,6 @@ class LoginViewController: UIViewController {
         etf.borderStyle = .roundedRect
         etf.font = UIFont.systemFont(ofSize: 14)
         
-        etf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return etf
     }()
     
@@ -60,7 +59,6 @@ class LoginViewController: UIViewController {
         ptf.borderStyle = .roundedRect
         ptf.font = UIFont.systemFont(ofSize: 14)
         
-        ptf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return ptf
     }()
     
@@ -73,7 +71,6 @@ class LoginViewController: UIViewController {
         lb.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         lb.setTitleColor(.white, for: .normal)
         
-        lb.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         lb.isEnabled = false
     
         return lb
@@ -88,8 +85,7 @@ class LoginViewController: UIViewController {
             ]))
         
         dhab.setAttributedTitle(attributedTitle, for: .normal)
-        
-        dhab.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
+    
         return dhab
     }()
     
@@ -99,7 +95,6 @@ class LoginViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .clear
-        button.addTarget(self, action: #selector(handleForgotPassword), for: .touchUpInside)
         
         return button
     }()
@@ -180,6 +175,17 @@ class LoginViewController: UIViewController {
         
         view.addSubview(forgotPasswordButton)
         forgotPasswordButton.anchor(top: stackView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 30)
+        
+        
+        addTargets()
+    }
+    
+    fileprivate func addTargets() {
+        emailTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+        dontHaveAccountButton.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
+        forgotPasswordButton.addTarget(self, action: #selector(handleForgotPassword), for: .touchUpInside)
     }
     
     //Called by buttons

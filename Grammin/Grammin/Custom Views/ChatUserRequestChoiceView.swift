@@ -157,7 +157,6 @@ extension ChatUserRequestChoiceView: UITableViewDelegate, UITableViewDataSource,
         let cell = tableView.dequeueReusableCell(withIdentifier: "csuc") as! ChatSearchUserCell
         //TODO config for diff modes, following, all etc.
         
-        //Safe?
         let theUser = following[indexPath.row]
         cell.user = theUser
         

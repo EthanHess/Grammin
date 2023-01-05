@@ -47,7 +47,7 @@ class StoryWatchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        view.backgroundColor = .white
     }
     
     fileprivate func avPlayerConfigure() {
