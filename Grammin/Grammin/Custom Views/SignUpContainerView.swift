@@ -30,7 +30,6 @@ class SignUpContainerView: UIView {
         let image = UIImage(named: "mainCamera")
         let button = UIButton(type: .system)
         button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(popCameraWrapper), for: .touchUpInside)
         
         return button
     }()
@@ -42,8 +41,6 @@ class SignUpContainerView: UIView {
         eField.borderStyle = .roundedRect
         eField.font = UIFont.systemFont(ofSize: 14)
         
-        eField.addTarget(self, action: #selector(monitorTextWrapper), for: .editingChanged)
-        
         return eField
     }()
     
@@ -53,8 +50,7 @@ class SignUpContainerView: UIView {
         utf.backgroundColor = Colors().lightWhiteBlue
         utf.borderStyle = .roundedRect
         utf.font = UIFont.systemFont(ofSize: 14)
-        utf.addTarget(self, action: #selector(monitorTextWrapper), for: .editingChanged)
-        
+ 
         return utf
     }()
     
@@ -65,8 +61,7 @@ class SignUpContainerView: UIView {
         ptf.backgroundColor = Colors().lightWhiteBlue
         ptf.borderStyle = .roundedRect
         ptf.font = UIFont.systemFont(ofSize: 14)
-        ptf.addTarget(self, action: #selector(monitorTextWrapper), for: .editingChanged)
-        
+ 
         return ptf
     }()
     
@@ -78,8 +73,6 @@ class SignUpContainerView: UIView {
         button.layer.cornerRadius = 5
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.white, for: .normal)
-        
-        button.addTarget(self, action: #selector(handleUserSignUpWrapper), for: .touchUpInside)
         
         button.isEnabled = false
         
@@ -151,9 +144,7 @@ class SignUpContainerView: UIView {
     }
     
     fileprivate func setUpViews() {
-        
-        //Add photo button
-        
+
         self.addSubview(cancelButton)
         
         cancelButton.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
@@ -177,13 +168,20 @@ class SignUpContainerView: UIView {
         
         //Other auth options
         facebookGoogleContainerSetup()
+        addTargets()
+    }
+    
+    fileprivate func addTargets() {
+        addPhotoButton.addTarget(self, action: #selector(popCameraWrapper), for: .touchUpInside)
+        emailTextField.addTarget(self, action: #selector(monitorTextWrapper), for: .editingChanged)
+        usernameTextField.addTarget(self, action: #selector(monitorTextWrapper), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(monitorTextWrapper), for: .editingChanged)
+        signUpButton.addTarget(self, action: #selector(handleUserSignUpWrapper), for: .touchUpInside)
     }
     
     fileprivate func facebookGoogleContainerSetup() {
         self.addSubview(facebookGoogleContainerView)
         facebookGoogleContainerView.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 50, paddingBottom: 70, paddingRight: 50, width: 0, height: 80)
-        
-        //Add buttons
     }
     
     @objc func hideSelf() {

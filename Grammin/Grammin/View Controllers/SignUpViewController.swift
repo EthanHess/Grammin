@@ -9,8 +9,7 @@
 import UIKit
 import Firebase
 
-//Now a subview, can delete this class
-
+//MARK: Now a subview, can delete this class
 class SignUpViewController: UIViewController {
     
     //Properties (TODO: subclass/customize?)
@@ -78,7 +77,6 @@ class SignUpViewController: UIViewController {
         
         button.setAttributedTitle(attributedTitle, for: .normal)
         
-        button.addTarget(self, action: #selector(handleAlreadyHaveAccount), for: .touchUpInside)
         return button
     }()
     
@@ -225,6 +223,7 @@ class SignUpViewController: UIViewController {
         signUpButton.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
     }
 
+    //MARK: Lifecycle begin
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -236,6 +235,7 @@ class SignUpViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        Logger.log("Memory warning in \(self)")
     }
     
 

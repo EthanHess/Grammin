@@ -36,6 +36,7 @@ class StoryView: UIView {
         self.isFlipped = false
     }
     
+    //MARK: Show story author's profile pic on one side and story thumbnail on the other
     fileprivate func resetViewForFlip() {
         if isFlipped == true {
             backgroundColor = Colors().coolGreen

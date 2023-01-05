@@ -11,12 +11,38 @@ import UIKit
 //TODO imp. w/ font awesome etc.
 class CustomNavigationBar: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    //MARK: Properties
+    var fontAwesomeContainerLeft : UIImageView = {
+        let fac = UIImageView()
+        return fac
+    }()
+    
+    var fontAwesomeContainerRight : UIImageView = {
+        let fac = UIImageView()
+        return fac
+    }()
+       
+    var customNavBarLeftTapGestureView : UIView = {
+        let cnb = UIView()
+        cnb.isUserInteractionEnabled = true
+        cnb.backgroundColor = .clear
+        return cnb
+    }()
+    
+    var customNavBarRightTapGestureView : UIView = {
+        let cnb = UIView()
+        cnb.isUserInteractionEnabled = true
+        cnb.backgroundColor = .clear
+        return cnb
+    }()
+    
+    //MARK: Life
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
     }
-    */
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
