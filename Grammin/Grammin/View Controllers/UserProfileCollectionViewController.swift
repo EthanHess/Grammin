@@ -390,7 +390,7 @@ extension UserProfileCollectionViewController: UIImagePickerControllerDelegate, 
             //TODO have options for GIF. / Video / Series of images / Filters?
             let deadlineTime = DispatchTime.now() + 0.5
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                GlobalFunctions.presentAddProfilePicAlertWithCompletion(title: "Use this picture as your profile pic?", text: "", fromVC: self) { (choseYes) in
+                GlobalFunctions.yesOrNoAlertWithTitle(title: "Use this picture as your profile pic?", text: "", fromVC: self) { (choseYes) in
                     if choseYes == true {
                         self.writeImageDataForProfilePic(chosenImage: originalImage)
                     } else {

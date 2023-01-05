@@ -38,9 +38,17 @@ class StoryController: NSObject {
         
     }
     
-    static func deleteStoryWithStoryID(currentUID: String, storyID: String, completion: @escaping ((_ success: Bool) -> Void)) {
+    //Need to delete from storage and other places that it will appear
+    //NoSQL databases will have a lot of duplicated data by nature
+    
+    static func deleteStoryWithStoryID(currentUID: String, storyID: String, storyStorageURLString: String?, completion: @escaping ((_ success: Bool) -> Void)) {
         fDatabase.child(StoriesReference).child(currentUID).child(storyID).removeValue { err, ref in
             print("--- Story removed \(err != nil ? err!.localizedDescription : "") -- \(ref.key)")
+            if storyStorageURLString != nil {
+                FirebaseStorageController.removeDownloadURL(URL: storyStorageURLString!) { success in
+                    print("--- Story storage removed \(err != nil ? err!.localizedDescription : "") -- \(ref.key)")
+                }
+            }
         }
     }
     

@@ -34,8 +34,10 @@ class GlobalFunctions : NSObject {
         }
     }
     
+    //Should be called "yesNoAlert" or something, use other places
+    
     //Refer to comment first line
-    static func presentAddProfilePicAlertWithCompletion(title: String, text: String, fromVC: UIViewController, completion: @escaping ((_ choseYes: Bool) -> Void)) {
+    static func yesOrNoAlertWithTitle(title: String, text: String, fromVC: UIViewController, completion: @escaping ((_ choseYes: Bool) -> Void)) {
         let alertController = UIAlertController(title: title, message: text, preferredStyle: .alert)
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (action) in
             completion(true)

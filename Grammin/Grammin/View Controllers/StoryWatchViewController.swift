@@ -18,12 +18,21 @@ class StoryWatchViewController: UIViewController {
         }
     }
     
-    lazy var player: AVPlayer = {
+    //Could also just have Story object if we'll use more
+    var curStoryID = ""
+    var curStoryDownloadURL = ""
+    
+    var customNavBar : CustomNavigationBar = {
+        let cnb = CustomNavigationBar()
+        return cnb
+    }()
+    
+    var player: AVPlayer = {
         let player = AVPlayer()
         return player
     }()
     
-    lazy var playerLayer: AVPlayerLayer = {
+    var playerLayer: AVPlayerLayer = {
         let layer = AVPlayerLayer()
         layer.videoGravity = .resize
         return layer
@@ -48,6 +57,19 @@ class StoryWatchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.backgroundColor = .white
+        navConfigure()
+    }
+    
+    fileprivate func navConfigure() {
+        let navWH = CGFloat(self.view.frame.size.width)
+        let navH = CGFloat(100)
+        
+        //Font Awesome gesture handlers
+        customNavBar.frame = CGRect(x: 0, y: 50, width: navWH, height: navH)
+        customNavBar.backgroundColor = Colors().customGray //TODO set internally, better practice
+        customNavBar.subviewsForNavBar()
+        customNavBar.delegate = self
+        view.addSubview(customNavBar)
     }
     
     fileprivate func avPlayerConfigure() {
@@ -63,7 +85,10 @@ class StoryWatchViewController: UIViewController {
                 let storyDict = snapshotArray?.first
                 if let dict = storyDict?.value {
                     let story = Story(storyDict: dict as! [String : Any])
-                    let url = URL(string: story.storyDownloadURL!)
+                    self.curStoryID = storyDict!.key //can key not exist
+                    self.curStoryDownloadURL = story.storyDownloadURL != nil ? story.storyDownloadURL! : ""
+                    let url = URL(string: self.curStoryDownloadURL)
+                    print("URL for story \(url!)")
                     self.videoSetup(url: url!)
                 }
             }
@@ -71,6 +96,9 @@ class StoryWatchViewController: UIViewController {
     }
     
     fileprivate func videoSetup(url: URL) {
+//        let playerItem = AVPlayerItem(url: url)
+//        self.player = AVPlayer(playerItem: playerItem)
+        
         self.player = AVPlayer(url: url)
         self.playerLayer = AVPlayerLayer(player: self.player)
         self.playerLayer.frame = self.containerImage.bounds
@@ -92,4 +120,36 @@ class StoryWatchViewController: UIViewController {
     }
     */
 
+}
+
+extension StoryWatchViewController: CustomNavigationBarDelegate {
+    func handleLeftTapped() {
+        handleDismiss()
+    }
+    
+    //The presenting view controller is responsible for dismissing the view controller it presented. If you call this method on the presented view controller itself, UIKit asks the presenting view controller to handle the dismissal.
+    
+    fileprivate func handleDismiss() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func handleRightTapped() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            Logger.log("No Auth")
+            return
+        }
+        if curStoryID == "" {
+            Logger.log("Story not set")
+            return
+        }
+        GlobalFunctions.yesOrNoAlertWithTitle(title: "Delete this story?", text: "", fromVC: self) { choseYes in
+            if choseYes {
+                StoryController.deleteStoryWithStoryID(currentUID: uid, storyID: self.curStoryID, storyStorageURLString: self.curStoryDownloadURL == "" ? nil : self.curStoryDownloadURL) { success in
+                    if success == true {
+                        self.handleDismiss()
+                    }
+                }
+            }
+        }
+    }
 }

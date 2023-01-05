@@ -16,7 +16,8 @@ import FontAwesome_swift
 //TODO come up with list of features IG doesn't have
 //Images animation + collage
 
-class StoryUploadViewController: UIViewController {
+class StoryUploadViewController: UIViewController, CustomNavigationBarDelegate {
+    
     //Containers
     let buttonContainer: UIView = {
         let theView = UIView()
@@ -29,39 +30,10 @@ class StoryUploadViewController: UIViewController {
         return theIV
     }()
     
-    //Subclass
-    var customNavBar : UIView = {
-        let cnb = UIView()
-        cnb.backgroundColor = Colors().customGray
+    var customNavBar : CustomNavigationBar = {
+        let cnb = CustomNavigationBar()
         return cnb
     }()
-    
-    var fontAwesomeContainerLeft : UIImageView = {
-        let fac = UIImageView()
-        return fac
-    }()
-    
-    var fontAwesomeContainerRight : UIImageView = {
-        let fac = UIImageView()
-        return fac
-    }()
-       
-    var customNavBarLeftTapGestureView : UIView = {
-        let cnb = UIView()
-        cnb.isUserInteractionEnabled = true
-        cnb.backgroundColor = .clear
-        return cnb
-    }()
-    
-    var customNavBarRightTapGestureView : UIView = {
-        let cnb = UIView()
-        cnb.isUserInteractionEnabled = true
-        cnb.backgroundColor = .clear
-        return cnb
-    }()
-    
-    
-    //Buttons (should subclass)
     
     //TODO just one media button? Also check button frames
     //TODO have scroll view with text, colors etc. for options
@@ -139,32 +111,15 @@ class StoryUploadViewController: UIViewController {
         
     @objc fileprivate func subviewsForNavBar() {
         //Left --- Right
-        let navWH = customNavBar.frame.size.width / 2
-        let navH = customNavBar.frame.size.height
+        let navWH = CGFloat(self.view.frame.size.width)
+        let navH = CGFloat(100)
         
         //Font Awesome gesture handlers
-        customNavBarLeftTapGestureView.frame = CGRect(x: 0, y: 0, width: navWH, height: navH)
-        customNavBar.addSubview(customNavBarLeftTapGestureView)
-        
-        let navGestureLeft = UITapGestureRecognizer(target: self, action: #selector(handleDismiss))
-        customNavBarLeftTapGestureView.addGestureRecognizer(navGestureLeft)
-        
-        customNavBarRightTapGestureView.frame = CGRect(x: navWH, y: 0, width: navWH, height: navH)
-        customNavBar.addSubview(customNavBarRightTapGestureView)
-        
-        let navGestureRight = UITapGestureRecognizer(target: self, action: #selector(handleUpload))
-        customNavBarRightTapGestureView.addGestureRecognizer(navGestureRight)
-        
-        //Font Awesome for custom nav bar
-        fontAwesomeContainerLeft.frame = CGRect(x: 10, y: 0, width: 50, height: 50)
-        customNavBarLeftTapGestureView.addSubview(fontAwesomeContainerLeft)
-        
-        fontAwesomeContainerLeft.image = UIImage.fontAwesomeIcon(name: .github, style: .brands, textColor: .white, size: CGSize(width: 40, height: 40))
-        
-        fontAwesomeContainerRight.frame = CGRect(x: navWH - 60, y: 0, width: 50, height: 50)
-        customNavBarRightTapGestureView.addSubview(fontAwesomeContainerRight)
-        
-        fontAwesomeContainerRight.image = UIImage.fontAwesomeIcon(name: .mask, style: .brands, textColor: .white, size: CGSize(width: 40, height: 40))
+        customNavBar.frame = CGRect(x: 0, y: 50, width: navWH, height: navH)
+        customNavBar.backgroundColor = Colors().customGray //TODO set internally, better practice
+        customNavBar.subviewsForNavBar()
+        customNavBar.delegate = self
+        view.addSubview(customNavBar)
         
         //And scroll view / story view
         optionsScrollContainer.scrollSetupWrapper()
@@ -185,7 +140,7 @@ class StoryUploadViewController: UIViewController {
     }
     
     fileprivate func uploadPulsate() {
-        applyRemovePulsateAnimationFromView(fontAwesomeContainerRight, apply: shouldPulsate())
+        applyRemovePulsateAnimationFromView(customNavBar.fontAwesomeContainerRight, apply: shouldPulsate())
     }
     
     fileprivate func applyRemovePulsateAnimationFromView(_ view: UIView, apply: Bool) {
@@ -205,10 +160,21 @@ class StoryUploadViewController: UIViewController {
     }
     
     //MARK: Handlers
-    @objc fileprivate func handleDismiss() {
+    fileprivate func handleDismiss() {
         self.dismiss(animated: true, completion: nil)
     }
     
+    //MARK: Delegate (Nav bar)
+    func handleLeftTapped() {
+        handleDismiss()
+    }
+    
+    func handleRightTapped() {
+        //TODO now only does video but add photo
+        handleUpload()
+    }
+    
+    //MARK: called from this file
     @objc fileprivate func handleVideo() {
         presentMediaWithType(video: true)
     }

@@ -97,7 +97,7 @@ class FirebaseController: NSObject {
     
     static func uploadVideoDataToFirebase(url: URL, path: String, completionString: @escaping ((_ downloadURLString: String?) -> Void)) {
         
-        let childString = NSString(format: "story_video_%@_%@", UUID().uuidString)
+        let childString = NSString(format: "story_video_%@", UUID().uuidString)
         let storyVideoRef = fStorage.child("StoryVideos").child(path).child(childString as String)
         
         do {
