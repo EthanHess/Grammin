@@ -30,6 +30,7 @@ class StoryController: NSObject {
     static func uploadStoryForUser(currentUID: String, storyDict: StoryDict, completion: @escaping ((_ success: Bool) -> Void)) {
         fDatabase.child(StoriesReference).child(currentUID).childByAutoId().setValue(storyDict, andPriority: nil) { err, ref in
             print("--- Story set \(err != nil ? err!.localizedDescription : "") -- \(ref.key)")
+            completion(err == nil)
         }
     }
     

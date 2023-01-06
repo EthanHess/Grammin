@@ -87,9 +87,14 @@ class StoryWatchViewController: UIViewController {
                     let story = Story(storyDict: dict as! [String : Any])
                     self.curStoryID = storyDict!.key //can key not exist
                     self.curStoryDownloadURL = story.storyDownloadURL != nil ? story.storyDownloadURL! : ""
-                    let url = URL(string: self.curStoryDownloadURL)
-                    print("URL for story \(url!)")
-                    self.videoSetup(url: url!)
+                    //let url = URL(string: self.curStoryDownloadURL)
+                    FirebaseStorageController.returnURLFromURLString(urlString: self.curStoryDownloadURL) { url in
+                        if url != nil {
+                            print("URL for story \(url!)")
+                            self.videoSetup(url: url!)
+                        }
+                    }
+                    
                 }
             }
         }
@@ -98,11 +103,12 @@ class StoryWatchViewController: UIViewController {
     fileprivate func videoSetup(url: URL) {
 //        let playerItem = AVPlayerItem(url: url)
 //        self.player = AVPlayer(playerItem: playerItem)
-        
-        self.player = AVPlayer(url: url)
-        self.playerLayer = AVPlayerLayer(player: self.player)
-        self.playerLayer.frame = self.containerImage.bounds
-        self.containerImage.layer.addSublayer(self.playerLayer)
+        DispatchQueue.main.async {
+            self.player = AVPlayer(url: url)
+            self.playerLayer = AVPlayerLayer(player: self.player)
+            self.playerLayer.frame = self.containerImage.bounds
+            self.containerImage.layer.addSublayer(self.playerLayer)
+        }
     }
     
     //TODO eventually animate text etc. + arrange collages

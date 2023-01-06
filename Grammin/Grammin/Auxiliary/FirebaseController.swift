@@ -70,7 +70,6 @@ class FirebaseController: NSObject {
         
         uploadTask.observe(.success) { (taskSnapshot) in
             
-            //Works
             profilePicsRef.downloadURL(completion: { (downloadURL, error) in
                 
                 if error != nil {
@@ -95,10 +94,12 @@ class FirebaseController: NSObject {
         //Add/Remove other observers if needed
     }
     
-    static func uploadVideoDataToFirebase(url: URL, path: String, completionString: @escaping ((_ downloadURLString: String?) -> Void)) {
+    static func uploadVideoDataToFirebase(uid: String, url: URL, path: String, completionString: @escaping ((_ downloadURLString: String?) -> Void)) {
         
         let childString = NSString(format: "story_video_%@", UUID().uuidString)
-        let storyVideoRef = fStorage.child("StoryVideos").child(path).child(childString as String)
+//        let storyVideoRef = fStorage.child("StoryVideos").child(path).child(childString as String)
+        
+        let storyVideoRef = fStorage.child("StoryVideos").child(uid).child(childString as String)
         
         do {
             let data = try Data(contentsOf: url)

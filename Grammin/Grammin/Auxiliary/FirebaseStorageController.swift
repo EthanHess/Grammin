@@ -11,7 +11,8 @@ import UIKit
 class FirebaseStorageController: NSObject {
     //When people delete posts, change pics, delete messages / stories etc.
     static func removeDownloadURL(URL: String, completion: @escaping ((_ success: Bool) -> Void)) {
-        fStorage.child(URL).delete { (error) in
+        let sRef = fStorage.storage.reference(forURL: URL)
+        sRef.delete { (error) in
             if error != nil {
                 Logger.log("\(error!.localizedDescription)")
                 completion(false)
@@ -23,4 +24,15 @@ class FirebaseStorageController: NSObject {
     }
     
     //TODO move upload code here for profile + posts, and eventually everything else
+    static func returnURLFromURLString(urlString: String, completion: @escaping(_ url: URL?) -> Void) {
+        let ref = fStorage.storage.reference(forURL: urlString)
+        ref.downloadURL { (url, error) in
+            if error != nil {
+                Logger.log((error?.localizedDescription)!)
+                completion(nil)
+            } else {
+                completion(url!)
+            }
+        }
+    }
 }

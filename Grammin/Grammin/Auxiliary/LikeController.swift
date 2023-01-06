@@ -19,7 +19,7 @@ class LikeController: NSObject {
         
     }
     
-    //TODO completion
+    //Store count (efficient)
     static func updatePostLikeCount(count: Int) {
         
     }

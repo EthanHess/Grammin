@@ -193,6 +193,8 @@ class StoryUploadViewController: UIViewController, CustomNavigationBarDelegate {
         
     }
     
+    //Show (up)loading icon
+    
     //TODO, can add collage of multiple videos / images
     @objc fileprivate func handleUpload() {
         //Should maybe store to not have to repeat call
@@ -202,7 +204,7 @@ class StoryUploadViewController: UIViewController, CustomNavigationBarDelegate {
         }
         if self.videoURL != nil {
             let filename = "\(uid) \(NSUUID().uuidString)"
-            FirebaseController.uploadVideoDataToFirebase(url: self.videoURL!, path: filename) { downloadURLString in
+            FirebaseController.uploadVideoDataToFirebase(uid: uid, url: self.videoURL!, path: filename) { downloadURLString in
                 if downloadURLString != nil {
                     let dict : StoryDict = ["storyDownloadURL": downloadURLString!,
                                 "storyMediaType": "video",
