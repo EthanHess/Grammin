@@ -97,13 +97,14 @@ class FirebaseController: NSObject {
     static func uploadVideoDataToFirebase(uid: String, url: URL, path: String, completionString: @escaping ((_ downloadURLString: String?) -> Void)) {
         
         let childString = NSString(format: "story_video_%@", UUID().uuidString)
-//        let storyVideoRef = fStorage.child("StoryVideos").child(path).child(childString as String)
-        
         let storyVideoRef = fStorage.child("StoryVideos").child(uid).child(childString as String)
+        
+        let metadata = StorageMetadata()
+        metadata.contentType = "video/quicktime"
         
         do {
             let data = try Data(contentsOf: url)
-            let uploadTask = storyVideoRef.putData(data, metadata: nil) { (metadata, error) in
+            let uploadTask = storyVideoRef.putData(data, metadata: metadata) { (metadata, error) in
                 if error != nil {
                     Logger.log("Error uploading SV: \(String(describing: error?.localizedDescription))")
                 } else {

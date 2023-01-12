@@ -21,7 +21,7 @@ class OptionsContainer: UIView {
     
     //TODO shadows
     //MARK: Why are these lazy? 
-    lazy var followingButton : UIButton = {
+    var followingButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = .mainBlue()
         button.setTitle("Following", for: .normal)
@@ -29,7 +29,7 @@ class OptionsContainer: UIView {
         return button
     }()
     
-    lazy var searchUserButton : UIButton = {
+    var searchUserButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor.darkGray
         button.setTitle("Search", for: .normal)

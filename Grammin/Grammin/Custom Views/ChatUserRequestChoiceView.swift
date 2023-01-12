@@ -29,6 +29,7 @@ class ChatUserRequestChoiceView: UIView {
     }
     */
 
+    //with lazy can reference self inside computed property since self will exist, may not actually want this to be lazy, if not, will need to reference self after brought to life
     lazy var searchBar: UISearchBar = {
         let theSearchBar = UISearchBar()
         theSearchBar.delegate = self

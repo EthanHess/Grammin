@@ -9,6 +9,9 @@
 import UIKit
 
 class FirebaseStorageController: NSObject {
+    
+    //NOTE: Completion can finish with a Result<Success, Failure> enum, may be cleaner
+    
     //When people delete posts, change pics, delete messages / stories etc.
     static func removeDownloadURL(URL: String, completion: @escaping ((_ success: Bool) -> Void)) {
         let sRef = fStorage.storage.reference(forURL: URL)

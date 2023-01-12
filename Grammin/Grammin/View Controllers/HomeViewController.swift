@@ -19,7 +19,6 @@ class HomeViewController: UICollectionViewController {
     
     var refreshControl : UIRefreshControl = {
         let rc = UIRefreshControl()
-        rc.addTarget(self, action: #selector(refresh), for: .valueChanged)
         return rc
     }()
     
@@ -49,6 +48,14 @@ class HomeViewController: UICollectionViewController {
     var currentUser : User?
     var following : [User] = [] //array of UIDs may be better/cleaner (don't really need both?)
     var followingUIDs : [String] = []
+    
+    //Cell configuration helpers
+    var expandedIndexPaths : [IndexPath] = [] //For more text / larger images
+    var likedPostIDs : [String] = []
+    
+    //If post has multiple images / videos, keep track of which index they're on, post won't go into "seen" table (node) until all images / videos have been seen
+    
+    var seenSegments : [[String: String]] = [] //[PostID: SegID / index]
     
     var gridMode = false
 
