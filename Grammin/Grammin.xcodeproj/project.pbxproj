@@ -101,6 +101,8 @@
 		27C8ED3020D1DA7000DB4EC4 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C8ED2F20D1DA7000DB4EC4 /* Like.swift */; };
 		27D4D0FA21405185002EA631 /* HomePostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D4D0F921405185002EA631 /* HomePostCollectionViewCell.swift */; };
 		27E56FBD20C0B529005AE7C4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E56FBC20C0B529005AE7C4 /* Constants.swift */; };
+		27EDF0DD29833CF7001C47ED /* StoryViewersContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EDF0DC29833CF7001C47ED /* StoryViewersContainer.swift */; };
+		27EDF0DF29834183001C47ED /* StoryViewerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EDF0DE29834183001C47ED /* StoryViewerCell.swift */; };
 		27EE6DCF25FFF6CF00757CDB /* ApplyFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EE6DCE25FFF6CF00757CDB /* ApplyFilterViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -221,6 +223,8 @@
 		27C8ED2F20D1DA7000DB4EC4 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		27D4D0F921405185002EA631 /* HomePostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostCollectionViewCell.swift; sourceTree = "<group>"; };
 		27E56FBC20C0B529005AE7C4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		27EDF0DC29833CF7001C47ED /* StoryViewersContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewersContainer.swift; sourceTree = "<group>"; };
+		27EDF0DE29834183001C47ED /* StoryViewerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewerCell.swift; sourceTree = "<group>"; };
 		27EE6DCE25FFF6CF00757CDB /* ApplyFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyFilterViewController.swift; sourceTree = "<group>"; };
 		8A27FA692F0ECAFB8241649A /* Pods-Grammin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Grammin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Grammin/Pods-Grammin.debug.xcconfig"; sourceTree = "<group>"; };
 		903F11DD5F399553AE730763 /* Pods_Grammin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Grammin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -417,6 +421,7 @@
 				271D063B275E987D00140B9D /* CirclePulsateAnimation.swift */,
 				271D063D275E989D00140B9D /* HorizontalDotAnimator.swift */,
 				279A4F1D29677126002C3A6D /* CustomNavigationBar.swift */,
+				27EDF0DC29833CF7001C47ED /* StoryViewersContainer.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -437,6 +442,7 @@
 				2742A0D02589A6BD0083D8AD /* MessageTableViewCell.swift */,
 				273396EF23D5FE9500F3D078 /* ChatSearchUserCell.swift */,
 				271E9E86267C2738004BD5EA /* ChooseMediaCollectionViewCell.swift */,
+				27EDF0DE29834183001C47ED /* StoryViewerCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -656,6 +662,7 @@
 				27404A812453DDC800AD334A /* StoryColorChoiceView.swift in Sources */,
 				27D4D0FA21405185002EA631 /* HomePostCollectionViewCell.swift in Sources */,
 				272A979A238A508000C79462 /* PostPopupView.swift in Sources */,
+				27EDF0DD29833CF7001C47ED /* StoryViewersContainer.swift in Sources */,
 				272B0D4523C0078E001807A7 /* ChatDetailViewController.swift in Sources */,
 				273310D52277B62400BE4019 /* AddDrawingViewController.swift in Sources */,
 				27EE6DCF25FFF6CF00757CDB /* ApplyFilterViewController.swift in Sources */,
@@ -723,6 +730,7 @@
 				2742A0D12589A6BD0083D8AD /* MessageTableViewCell.swift in Sources */,
 				278EFE59242D971500C90B08 /* ChosenChatParticipantsContainer.swift in Sources */,
 				276F2B3B20B7703A00303E30 /* Comment.swift in Sources */,
+				27EDF0DF29834183001C47ED /* StoryViewerCell.swift in Sources */,
 				2743606B2449338E00A793DB /* StoryController.swift in Sources */,
 				27C8ED3020D1DA7000DB4EC4 /* Like.swift in Sources */,
 				273396F023D5FE9500F3D078 /* ChatSearchUserCell.swift in Sources */,

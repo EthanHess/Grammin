@@ -47,6 +47,12 @@ class StoryWatchViewController: UIViewController {
         let aiv = PostCellImageView()
         return aiv
     }()
+    
+    //May not need if no viewers?
+    lazy var storyViewersContainerView: StoryViewersContainer = {
+        let svc = StoryViewersContainer()
+        return svc
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +76,10 @@ class StoryWatchViewController: UIViewController {
         customNavBar.subviewsForNavBar()
         customNavBar.delegate = self
         view.addSubview(customNavBar)
+    }
+    
+    fileprivate func determineMediaType() {
+        //TODO what to set up, images / audio / video / text / whatever
     }
     
     fileprivate func avPlayerConfigure() {
@@ -111,9 +121,20 @@ class StoryWatchViewController: UIViewController {
         }
     }
     
+    fileprivate func setupViewers() {
+        //self.curStoryID
+        self.storyViewersContainerView.loadViewers([])
+    }
+    
     //TODO eventually animate text etc. + arrange collages
     fileprivate func configureStory() {
         
+    }
+
+    //MARK: Drag handler (raise table + shrink story content)
+    @objc private func dragHandler(_ sender: UIPanGestureRecognizer) {
+        //Use coordinates to animate
+        let translation = sender.translation(in: self.view)
     }
 
     /*
