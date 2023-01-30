@@ -81,6 +81,7 @@
 		276F2B3B20B7703A00303E30 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276F2B3A20B7703A00303E30 /* Comment.swift */; };
 		276F2B3E20B775AA00303E30 /* LayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276F2B3D20B775AA00303E30 /* LayoutAttributes.swift */; };
 		276F2B4020B77E6100303E30 /* CircularLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276F2B3F20B77E6100303E30 /* CircularLayout.swift */; };
+		2773F79E2988709300623AE4 /* AlgorithmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2773F79D2988709300623AE4 /* AlgorithmManager.swift */; };
 		27749FB923E656E600355B68 /* MainFeedOptionsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27749FB823E656E500355B68 /* MainFeedOptionsContainer.swift */; };
 		277ADEB025FED86B001A5B42 /* SelectPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277ADEAF25FED86B001A5B42 /* SelectPhotoViewController.swift */; };
 		278445AB23CEC80900577E38 /* ChatUserRequestChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278445AA23CEC80900577E38 /* ChatUserRequestChoiceView.swift */; };
@@ -203,6 +204,7 @@
 		276F2B3A20B7703A00303E30 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		276F2B3D20B775AA00303E30 /* LayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutAttributes.swift; sourceTree = "<group>"; };
 		276F2B3F20B77E6100303E30 /* CircularLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularLayout.swift; sourceTree = "<group>"; };
+		2773F79D2988709300623AE4 /* AlgorithmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmManager.swift; sourceTree = "<group>"; };
 		27749FB823E656E500355B68 /* MainFeedOptionsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedOptionsContainer.swift; sourceTree = "<group>"; };
 		277ADEAF25FED86B001A5B42 /* SelectPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoViewController.swift; sourceTree = "<group>"; };
 		278445AA23CEC80900577E38 /* ChatUserRequestChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUserRequestChoiceView.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				272B0D4623C007C5001807A7 /* ChatsController.swift */,
 				2743606A2449338E00A793DB /* StoryController.swift */,
 				27A64F5E27262A2600FC9E03 /* CoreDataStack.swift */,
+				2773F79D2988709300623AE4 /* AlgorithmManager.swift */,
 			);
 			path = Auxiliary;
 			sourceTree = "<group>";
@@ -698,6 +701,7 @@
 				27A278BF20B621890054607A /* UserSearchCollectionViewController.swift in Sources */,
 				273082182380B72200188170 /* MainChatsListViewController.swift in Sources */,
 				276F2B2C20B7405700303E30 /* CustomPresenter.swift in Sources */,
+				2773F79E2988709300623AE4 /* AlgorithmManager.swift in Sources */,
 				27566C7920B3823500ACE668 /* AppDelegate.swift in Sources */,
 				273396F423D6001F00F3D078 /* MainFeedOptionsToggleView.swift in Sources */,
 				27A278B320B5E96F0054607A /* MainTabBarController.swift in Sources */,

@@ -27,8 +27,11 @@ class StoryViewersContainer: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         renderTable()
+        
+        isUserInteractionEnabled = true
+        backgroundColor = Colors().aquarium
+        layer.cornerRadius = 5
     }
     
     fileprivate func renderTable() {
@@ -37,7 +40,6 @@ class StoryViewersContainer: UIView {
         table.register(StoryViewerCell.self, forCellReuseIdentifier: cellID)
         table.dataSource = self
         table.delegate = self
-        
     }
     
     func loadViewers(_ viewers: [User]) {

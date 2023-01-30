@@ -53,6 +53,8 @@ class StoryWatchViewController: UIViewController {
         let svc = StoryViewersContainer()
         return svc
     }()
+    
+    var originalStoryFrame : CGRect = .zero
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +78,20 @@ class StoryWatchViewController: UIViewController {
         customNavBar.subviewsForNavBar()
         customNavBar.delegate = self
         view.addSubview(customNavBar)
+        
+        storyViewersConfigure()
+    }
+    
+    //Add extension to quickly grab height / width cleaner
+    fileprivate func storyViewersConfigure() {
+        //Initially will be at bottom of screen
+        let storyFrame = CGRect(x: 10, y: self.view.frame.size.height - 50, width: self.view.frame.size.width - 20, height: self.view.frame.size.height)
+        
+        storyViewersContainerView.frame = storyFrame
+        originalStoryFrame = storyFrame
+        let dragGesture = UIPanGestureRecognizer(target: self, action: #selector(dragHandler(_:)))
+        storyViewersContainerView.addGestureRecognizer(dragGesture)
+        view.addSubview(storyViewersContainerView)
     }
     
     fileprivate func determineMediaType() {
@@ -130,11 +146,33 @@ class StoryWatchViewController: UIViewController {
     fileprivate func configureStory() {
         
     }
+    
+    var lastTranslation : CGFloat = 0
 
     //MARK: Drag handler (raise table + shrink story content)
     @objc private func dragHandler(_ sender: UIPanGestureRecognizer) {
         //Use coordinates to animate
+        
+        //For story viewers frame
         let translation = sender.translation(in: self.view)
+        let x = originalStoryFrame.origin.x
+        
+        //NOTE: Still need to handle pan downward
+        let y = originalStoryFrame.origin.y + (translation.y - lastTranslation)
+        
+        lastTranslation = translation.y
+        
+        let w = originalStoryFrame.width
+        let h = originalStoryFrame.height
+        
+        storyViewersContainerView.frame = CGRectMake(x, y, w, h)
+        originalStoryFrame = storyViewersContainerView.frame
+        
+        Logger.log("T Y \(translation.y)")
+        
+        //For current story container (will shrink as SVC moves up)
+        
+        //containerImage.frame = CGRect(x: <#T##Int#>, y: <#T##Int#>, width: <#T##Int#>, height: <#T##Int#>)
     }
 
     /*
