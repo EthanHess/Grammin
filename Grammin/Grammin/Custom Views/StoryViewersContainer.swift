@@ -10,15 +10,8 @@ import UIKit
 
 class StoryViewersContainer: UIView {
     
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
-    
-    var viewers : [User] = []
+    var userCache : [String: User] = [:]
+    var viewerIDs : [String] = [] //Will load user one at a time as user scrolls, may be more efficient
     
     let table : UITableView = {
         let tv = UITableView()
@@ -27,7 +20,6 @@ class StoryViewersContainer: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        renderTable()
         
         isUserInteractionEnabled = true
         backgroundColor = Colors().aquarium
@@ -40,10 +32,23 @@ class StoryViewersContainer: UIView {
         table.register(StoryViewerCell.self, forCellReuseIdentifier: cellID)
         table.dataSource = self
         table.delegate = self
+        table.separatorStyle = .none
+        table.backgroundColor = .clear
+        let tableFrame = CGRectMake(20, 60, frame.size.width - 40, frame.size.height - 80)
+        table.frame = tableFrame
+        addSubview(table)
+        
+        addTopViews()
     }
     
-    func loadViewers(_ viewers: [User]) {
-        self.viewers = viewers
+    //Alpha slider + chat toggle button
+    fileprivate func addTopViews() {
+        
+    }
+    
+    func loadViewers(_ viewers: [String]) {
+        renderTable()
+        self.viewerIDs = viewers
         refreshData()
     }
     
@@ -62,13 +67,28 @@ typealias TableFunctions = UITableViewDelegate & UITableViewDataSource
 
 extension StoryViewersContainer: TableFunctions {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewers.count
+        return viewerIDs.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let theCell = tableView.dequeueReusableCell(withIdentifier: "theCell") as! StoryViewerCell
         
-        //Config
+        let idAtIndexPath = viewerIDs[indexPath.row]
+        theCell.subviewConfig()
+        if let theUser = userCache[idAtIndexPath] {
+            theCell.user = theUser
+        } else {
+            FirebaseController.fetchUserWithUID(userID: idAtIndexPath) { user in
+                if user != nil {
+                    theCell.user = user
+                    self.userCache[idAtIndexPath] = user
+                }
+            }
+        }
         
         return theCell
     }

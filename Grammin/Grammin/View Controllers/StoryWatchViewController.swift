@@ -118,11 +118,28 @@ class StoryWatchViewController: UIViewController {
                         if url != nil {
                             print("URL for story \(url!)")
                             self.videoSetup(url: url!)
+                            self.writeToViewers()
+                            self.setupViewers()
                         }
                     }
                     
                 }
             }
+        }
+    }
+    
+    //Current user watched the story
+    fileprivate func writeToViewers() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            Logger.log("No Auth")
+            return
+        }
+        if curStoryID == "" {
+            Logger.log("Story not set")
+            return
+        }
+        StoryController.addViewerToSegment(curStoryID, segmentID: "", viewerID: uid) { success in
+            Logger.log("Write viewer (story) success \(success)")
         }
     }
     
@@ -139,7 +156,13 @@ class StoryWatchViewController: UIViewController {
     
     fileprivate func setupViewers() {
         //self.curStoryID
-        self.storyViewersContainerView.loadViewers([])
+        StoryController.fetchViewersForSegment(curStoryID, segmentID: "") { viewerIDs in
+            if viewerIDs != nil {
+                self.storyViewersContainerView.loadViewers(viewerIDs!)
+            } else {
+                //WTD?
+            }
+        }
     }
     
     //TODO eventually animate text etc. + arrange collages
@@ -209,7 +232,7 @@ extension StoryWatchViewController: CustomNavigationBarDelegate {
         }
         GlobalFunctions.yesOrNoAlertWithTitle(title: "Delete this story?", text: "", fromVC: self) { choseYes in
             if choseYes {
-                StoryController.deleteStoryWithStoryID(currentUID: uid, storyID: self.curStoryID, storyStorageURLString: self.curStoryDownloadURL == "" ? nil : self.curStoryDownloadURL) { success in
+                StoryController.deleteStoryWithStoryID(uid, storyID: self.curStoryID, storyStorageURLString: self.curStoryDownloadURL == "" ? nil : self.curStoryDownloadURL) { success in
                     if success == true {
                         self.handleDismiss()
                     }

@@ -50,7 +50,7 @@ class StoriesHeaderCollectionViewCell: UICollectionViewCell {
         FirebaseController.fetchUserWithUID(userID: uid) { (theUser) in
             if theUser != nil {
                 //User may not have image? add default
-                StoryController.userHasStory(currentUID: theUser!.uid) { exists in
+                StoryController.userHasStory(theUser!.uid) { exists in
                     if exists == true {
                         print("Has story!")
                         //self.animateViewForMyStory()

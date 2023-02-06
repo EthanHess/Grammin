@@ -15,6 +15,7 @@ let FollowingReference = "Following"
 let PostsReference = "Posts"
 let LikesReference = "Likes"
 let StoriesReference = "Stories"
+let StoryViewsReference = "StoryViews" //Who viewed what story (as opposed to posts etc.)
 
 // Notifications
 

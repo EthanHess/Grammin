@@ -211,7 +211,7 @@ class StoryUploadViewController: UIViewController, CustomNavigationBarDelegate {
                                 "storyText": "This is a test!",
                                 "timestamp": NSDate().timeIntervalSince1970,
                                 "storyAuthorUID": uid]
-                    StoryController.uploadStoryForUser(currentUID: uid, storyDict: dict) { success in
+                    StoryController.uploadStoryForUser(uid, storyDict: dict) { success in
                         if success == true {
                             //Pop back or allow them to upload another?
                             //Would need [weak self] if this class retains StoryController or this block

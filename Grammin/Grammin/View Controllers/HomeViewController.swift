@@ -518,7 +518,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, HomePostCellDe
             return
         }
         
-        StoryController.userHasStory(currentUID: uid) { exists in
+        StoryController.userHasStory(uid) { exists in
             if exists == true {
                 let storyWatchVC = StoryWatchViewController()
                 storyWatchVC.curUID = uid
