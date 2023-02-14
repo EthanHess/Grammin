@@ -14,8 +14,22 @@ class StoryViewersContainer: UIView {
     var viewerIDs : [String] = [] //Will load user one at a time as user scrolls, may be more efficient
     
     let table : UITableView = {
-        let tv = UITableView()
+        let tv = UITableView(frame: .zero, style: .grouped)
         return tv
+    }()
+    
+    //Change alpha
+    let slider : UISlider = {
+        let sl = UISlider()
+        return sl
+    }()
+    
+    //This should be done on main thread (updating title)
+    let segController : UISegmentedControl = {
+        let sc = UISegmentedControl()
+        sc.insertSegment(withTitle: "Viewers", at: 0, animated: true)
+        sc.insertSegment(withTitle: "Chat", at: 1, animated: true)
+        return sc
     }()
     
     override init(frame: CGRect) {
@@ -43,6 +57,31 @@ class StoryViewersContainer: UIView {
     
     //Alpha slider + chat toggle button
     fileprivate func addTopViews() {
+        let stackView = UIStackView(arrangedSubviews: [slider, segController])
+        stackView.axis = .vertical
+        addSubview(stackView)
+        stackView.anchor(top: topAnchor, left: leftAnchor, bottom: table.topAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10, paddingRight: 10, width: 0, height: 0)
+        
+        slider.addTarget(self, action: #selector(sliderValueChanged(sender: )), for: .valueChanged)
+        segController.addTarget(self, action: #selector(segmentSelected(sender: )), for: .valueChanged)
+    }
+    
+    @objc fileprivate func sliderValueChanged(sender: UISlider) {
+        let newVal = sender.value
+        self.backgroundColor = Colors().aquarium.withAlphaComponent(CGFloat(newVal))
+    }
+    
+    @objc fileprivate func segmentSelected(sender: UISegmentedControl) {
+        let newVal = sender.selectedSegmentIndex
+        if newVal == 0 {
+            table.isHidden = false
+        } else {
+            table.isHidden = true
+            loadChat()
+        }
+    }
+    
+    fileprivate func loadChat() {
         
     }
     

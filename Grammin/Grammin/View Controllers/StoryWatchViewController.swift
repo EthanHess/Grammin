@@ -64,8 +64,18 @@ class StoryWatchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        view.backgroundColor = .white
+        view.backgroundColor = .black //gradient would look cool here ?
         navConfigure()
+    }
+    
+    fileprivate func addShadow(_ view: UIView, color: UIColor) {
+        let layer = view.layer
+        layer.masksToBounds = false
+        layer.shadowColor = color.cgColor
+        layer.shadowOpacity = 0.5 //alpha
+        layer.shadowOffset = CGSize(width: 1, height: 1)
+        layer.shadowRadius = 5
+        layer.shouldRasterize = false //rasterize means convert image into pixels (bitmap)
     }
     
     fileprivate func navConfigure() {
@@ -91,6 +101,7 @@ class StoryWatchViewController: UIViewController {
         originalStoryFrame = storyFrame
         let dragGesture = UIPanGestureRecognizer(target: self, action: #selector(dragHandler(_:)))
         storyViewersContainerView.addGestureRecognizer(dragGesture)
+        addShadow(storyViewersContainerView, color: .white)
         view.addSubview(storyViewersContainerView)
     }
     
@@ -104,6 +115,10 @@ class StoryWatchViewController: UIViewController {
         authorImageView.frame = CGRect(x: 20, y: 100, width: 50, height: 50)
         authorImageView.loadImage(urlString: curUID) //Needs to be profile URL
         containerImage.addSubview(authorImageView)
+        containerImage.layer.cornerRadius = 5
+        containerImage.layer.borderColor = UIColor.darkGray.cgColor
+        containerImage.layer.borderWidth = 1
+        addShadow(containerImage, color: .white)
         
         fDatabase.child(StoriesReference).child(curUID).observe(.value) { snapshot in
             if snapshot.exists() {
@@ -183,6 +198,7 @@ class StoryWatchViewController: UIViewController {
         //NOTE: Still need to handle pan downward
         let y = originalStoryFrame.origin.y + (translation.y - lastTranslation)
         
+        let difference = translation.y - lastTranslation //Animation operand
         lastTranslation = translation.y
         
         let w = originalStoryFrame.width
@@ -191,11 +207,28 @@ class StoryWatchViewController: UIViewController {
         storyViewersContainerView.frame = CGRectMake(x, y, w, h)
         originalStoryFrame = storyViewersContainerView.frame
         
-        Logger.log("T Y \(translation.y)")
+        Logger.log("T Y \(translation.y) \(lastTranslation) DIFF \(difference)")
         
-        //For current story container (will shrink as SVC moves up)
+        //MARK: For current story container (will shrink as SVC moves up)
         
-        //containerImage.frame = CGRect(x: <#T##Int#>, y: <#T##Int#>, width: <#T##Int#>, height: <#T##Int#>)
+        //multiplication of two negatives is positive so renegativefy if negative
+        let differenceMultiplied = difference * 2
+        let differenceAdjusted = difference < 0 ? -differenceMultiplied : differenceMultiplied
+        
+        let newWidth = containerImage.frame.size.width - differenceAdjusted
+        let newHeight = containerImage.frame.size.height - differenceAdjusted
+        
+        let newFrameForContainer = CGRect(x: containerImage.frame.origin.x - difference, y: containerImage.frame.origin.y - difference, width: newWidth, height: newHeight)
+        
+        let newX = newFrameForContainer.origin.x
+        let newY = newFrameForContainer.origin.y
+        let newW = newFrameForContainer.size.width
+        let newH = newFrameForContainer.size.height
+        
+        Logger.log("NEW FRAME FOR CONTAINER \(newFrameForContainer) - \(newWidth) - \(newHeight) DIFF * 2 \(difference * 2)")
+        
+        containerImage.frame = CGRect(x: newX, y: newY, width: newW, height: newH)
+        self.playerLayer.frame = containerImage.bounds
     }
 
     /*
