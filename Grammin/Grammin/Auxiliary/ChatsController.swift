@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 
+//Firebase can listen for children added but may also want to use some sort of socket for this
 class ChatsController: NSObject {
     
     //For when they create new

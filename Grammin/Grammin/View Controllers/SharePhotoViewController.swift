@@ -34,6 +34,12 @@ class SharePhotoViewController: UIViewController {
         }
     }
     
+    var itemsToPost: [CollectionItem] = [] {
+        didSet {
+            print("Chosen items \(itemsToPost)")
+        }
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }

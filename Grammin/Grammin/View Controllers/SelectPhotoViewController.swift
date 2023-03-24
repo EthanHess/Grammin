@@ -21,6 +21,8 @@ struct CollectionItem : Equatable {
     let video : URL? //This will be asset's url
 }
 
+//TODO add loading view
+
 //MARK: Will replace select photo collection view
 class SelectPhotoViewController: UIViewController {
 
@@ -255,6 +257,7 @@ class SelectPhotoViewController: UIViewController {
     //Will now go to filter VC
     @objc fileprivate func nextHandler() {
         let sharePhotoController = SharePhotoViewController()
+        sharePhotoController.itemsToPost = chosenItems
         navigationController?.pushViewController(sharePhotoController, animated: true)
     }
     
@@ -270,6 +273,13 @@ class SelectPhotoViewController: UIViewController {
         DispatchQueue.main.async {
             self.imageCollectionView.reloadData()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //TODO remove all that need to be removed
+        chosenItems.removeAll()
     }
 
     /*
