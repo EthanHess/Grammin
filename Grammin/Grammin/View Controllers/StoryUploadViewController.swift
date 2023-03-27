@@ -204,7 +204,7 @@ class StoryUploadViewController: UIViewController, CustomNavigationBarDelegate {
         }
         if self.videoURL != nil {
             let filename = "\(uid) \(NSUUID().uuidString)"
-            FirebaseController.uploadVideoDataToFirebase(uid: uid, url: self.videoURL!, path: filename) { downloadURLString in
+            FirebaseController.uploadVideoDataToFirebase(uid: uid, url: self.videoURL!, path: filename, uploadType: .story) { downloadURLString in
                 if downloadURLString != nil {
                     let dict : StoryDict = ["storyDownloadURL": downloadURLString!,
                                 "storyMediaType": "video",

@@ -16,6 +16,7 @@ let PostsReference = "Posts"
 let LikesReference = "Likes"
 let StoriesReference = "Stories"
 let StoryViewsReference = "StoryViews" //Who viewed what story (as opposed to posts etc.)
+let ProfileReference = "Profile"
 
 // Notifications
 
@@ -32,7 +33,6 @@ let fcmKey = "fcmToken"
 let profileURLKey = "profileURL"
 
 //Post object
-
 let imageUrlKey = "imageUrl"
 let postCaptionKey = "caption"
 let imageWidthKey = "imageWidth"
@@ -41,6 +41,7 @@ let createdAt = "creationDate"
 let videoURLKey = "videoURL"
 let mediaTypeKey = "mediaType"
 let multipleKey = "multiple"
+let mediaArrayKey = "mediaArray"
 
 //Chat object
 let mainChatsNode = "Chats" //Will store full chat object, Chats > UID

@@ -9,6 +9,21 @@
 import UIKit
 import Firebase
 
+//TODO Move to enums file + factor in audio, gifs / whatever
+enum VideoUploadType : NSString {
+    case story = "story_video"
+    case post = "post_video"
+    case comment = "comment_video"
+    case profile = "profile_video"
+}
+
+enum ImageUploadType : NSString {
+    case story = "story_image"
+    case post = "post_image"
+    case comment = "comment_image"
+    case profile = "profile_image"
+}
+
 let fDatabase = Database.database().reference()
 let fStorage = Storage.storage().reference()
 
@@ -55,10 +70,10 @@ class FirebaseController: NSObject {
     //MARK Storage (TODO Move to storage file "FirebaseStorageController", also organize code and move all storage functionality there)
     
     //This is for profile image, will want another path for post / story / chat images
-    static func uploadImageDataToFirebase(data: Data, path: String, completionString: @escaping  ((_ downloadURLString: String?) -> Void)) {
+    static func uploadImageDataToFirebase(uid: String, data: Data, path: String, uploadType: ImageUploadType, completionString: @escaping  ((_ downloadURLString: String?) -> Void)) {
         
-        let childString = NSString(format: "profile_image_%@", UUID().uuidString)
-        let profilePicsRef = fStorage.child("ProfilePics").child(path).child(childString as String)
+        let childString = NSString(format: "%@_%@", uploadType.rawValue, UUID().uuidString)
+        let profilePicsRef = fStorage.child(path).child(uid).child(childString as String)
         
         let uploadTask = profilePicsRef.putData(data, metadata: nil) { (metadata, error) in
             if error != nil {
@@ -94,9 +109,9 @@ class FirebaseController: NSObject {
         //Add/Remove other observers if needed
     }
     
-    static func uploadVideoDataToFirebase(uid: String, url: URL, path: String, completionString: @escaping ((_ downloadURLString: String?) -> Void)) {
+    static func uploadVideoDataToFirebase(uid: String, url: URL, path: String, uploadType: VideoUploadType, completionString: @escaping ((_ downloadURLString: String?) -> Void)) {
         
-        let childString = NSString(format: "story_video_%@", UUID().uuidString)
+        let childString = NSString(format: "%@_%@", uploadType.rawValue, UUID().uuidString)
         let storyVideoRef = fStorage.child("StoryVideos").child(uid).child(childString as String)
         
         let metadata = StorageMetadata()

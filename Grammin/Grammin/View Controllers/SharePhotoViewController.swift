@@ -76,7 +76,31 @@ class SharePhotoViewController: UIViewController {
         textView.anchor(top: containerView.topAnchor, left: imageView.rightAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
+    fileprivate func displayChosenMedia() {
+        //TODO imp. show chosen thumbnails
+    }
+    
+    //Leaving "selectedImage" code from original project, now adds multiple + video functionality
     @objc fileprivate func sharePhoto() {
+        if authed() == false {
+            GlobalFunctions.presentAlert(title: "An error occured", text: "Please check your internet connection", fromVC: self)
+            return
+        }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+
+        if itemsToPost.isEmpty && selectedImage == nil {
+            return
+        }
+        
+        if itemsToPost.count == 1 && itemsToPost[0].media == "video" {
+            handleVideo()
+            return
+        }
+        
+        if itemsToPost.count > 1 {
+            handleMultiple(uid)
+            return
+        }
         
         //TODO add loading Icon
         guard let caption = textView.text, caption.count > 0 else { return }
@@ -84,7 +108,7 @@ class SharePhotoViewController: UIViewController {
         guard let uploadData = UIImageJPEGRepresentation(image, 0.5) else { return }
         navigationItem.rightBarButtonItem?.isEnabled = false
     
-        FirebaseController.uploadImageDataToFirebase(data: uploadData, path: PostsReference) { (theURL) in
+        FirebaseController.uploadImageDataToFirebase(uid: uid, data: uploadData, path: PostsReference, uploadType: .post) { (theURL) in
             
             //alert with type enum in case of nil values
             guard let url = theURL else { Logger.log("no URL"); return }
@@ -97,9 +121,78 @@ class SharePhotoViewController: UIViewController {
         }
     }
     
+    //Eventually add enum to account for multiple difference cases but for now just image + video
+    
+    //With more options use switch statement for less computing
+    fileprivate func handleMultiple(_ uid: String) {
+        guard let caption = textView.text, caption.count > 0 else {
+            GlobalFunctions.presentAlert(title: "You need a caption for this post", text: "", fromVC: self)
+            return
+        }
+        
+        //Use Dispatch Group to monitor when all async calls complete then add everything to post dictionary
+        
+        //Could use a Semaphore as well but semaphores are more for general purposes, especially when synchronizing threads and protecting shared resources, in async await frameworks we can also use "AsyncSequence"
+        
+        let dispatchGroup = DispatchGroup()
+        var downloadURLSForPost : [String] = []
+        
+        //This is kind of ugly and unnecessary, but just testing something (also crashes)
+        
+//        let downloadURLClosure = { (str: String?) in
+//            if str != nil {
+//                downloadURLSForPost.append(str!)
+//            }
+//            dispatchGroup.leave()
+//        }
+        
+        for item in itemsToPost {
+            if item.media == "image" {
+                dispatchGroup.enter()
+                if item.image == nil { dispatchGroup.leave() }
+                guard let uploadData = UIImageJPEGRepresentation(item.image!, 0.5) else {
+                    //Log failure here and leave DG
+                    dispatchGroup.leave()
+                    return
+                }
+                FirebaseController.uploadImageDataToFirebase(uid: uid, data: uploadData, path: PostsReference, uploadType: .post) { downloadURLString in
+                    if downloadURLString != nil { downloadURLSForPost.append(downloadURLString!) }
+                    dispatchGroup.leave()
+                }
+            }
+            if item.media == "video" {
+                dispatchGroup.enter()
+                if item.video == nil { dispatchGroup.leave() }
+                FirebaseController.uploadVideoDataToFirebase(uid: uid, url: item.video!, path: "", uploadType: .post) { downloadURLString in
+                    if downloadURLString != nil { downloadURLSForPost.append(downloadURLString!) }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        
+        
+        
+        //May want a struct with downloadURL as property to sync with media type although we can currently grab it from download URL str.
+        
+        dispatchGroup.notify(queue: .main) {
+            if downloadURLSForPost.isEmpty {
+                //Something went wrong, log error
+                return
+            }
+            let newPostMultiple = [multipleKey: true, mediaArrayKey: downloadURLSForPost, postCaptionKey: caption, createdAt: Date().timeIntervalSince1970] as [String: Any]
+            self.writeToFirebaseWithDictionary(newPost: newPostMultiple)
+        }
+    }
+    
+    fileprivate func handleVideo() {
+        
+    }
+    
+    fileprivate func logUploadErrorWithType() {
+        //TODO Imp. if above upload fails, keep track of where + move to error logging file
+    }
     
     fileprivate func writeToFirebaseWithDictionary(newPost: [String: Any]) {
-        if authed() {
             //Don't need guard here but extracts optional variable
             guard let uid = Auth.auth().currentUser?.uid else { return }
             fDatabase.child(PostsReference).child(uid).childByAutoId().setValue(newPost) { (error, reference) in
@@ -111,7 +204,6 @@ class SharePhotoViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
                 NotificationCenter.default.post(name: SharePhotoViewController.updateFeedNotification, object: nil)
             }
-        }
     }
     
     fileprivate func authed() -> Bool {

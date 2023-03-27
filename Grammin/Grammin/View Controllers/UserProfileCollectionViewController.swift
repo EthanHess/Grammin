@@ -17,12 +17,12 @@ class UserProfileCollectionViewController: UICollectionViewController {
     let homePostCellId = "homePostCellId"
     
     enum ViewType { //Add type?
-        case Grid
-        case List
+        case grid
+        case list
     }
     
     var profileUser: User?
-    var viewType = ViewType.Grid
+    var viewType = ViewType.grid
     
     //Pagination, load what we need, we'll want to do this in the main feed as well
     var isFinishedPaging = false
@@ -222,7 +222,7 @@ class UserProfileCollectionViewController: UICollectionViewController {
     }
     
     fileprivate func uploadWrapper(imageData: Data, userID: String) {
-        FirebaseController.uploadImageDataToFirebase(data: imageData, path: userID) { (downloadURL) in
+        FirebaseController.uploadImageDataToFirebase(uid: userID, data: imageData, path: ProfileReference, uploadType: .profile) { (downloadURL) in
             if downloadURL != nil {
                 fDatabase.child(UsersReference).child(userID).child(profileURLKey).setValue(downloadURL) { (error, ref) in
                     if error != nil {
@@ -273,7 +273,7 @@ class UserProfileCollectionViewController: UICollectionViewController {
             paginatePosts()
         }
         
-        if self.viewType == .Grid {
+        if self.viewType == .grid {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MyProfileMediaCell
             cell.post = posts[indexPath.item]
             return cell
@@ -297,7 +297,7 @@ class UserProfileCollectionViewController: UICollectionViewController {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if self.viewType == .Grid {
+        if self.viewType == .grid {
             let width = (view.frame.width - 2) / 3
             return CGSize(width: width, height: width)
         } else {
@@ -348,12 +348,12 @@ extension UserProfileCollectionViewController: UserProfileHeaderDelegate {
         }
     }
     func didChangeToGridView() {
-        self.viewType = .Grid
+        self.viewType = .grid
         refreshCollection()
     }
     
     func didChangeToListView() {
-        self.viewType = .List
+        self.viewType = .list
         refreshCollection()
     }
     

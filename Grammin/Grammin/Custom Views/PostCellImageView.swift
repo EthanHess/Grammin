@@ -34,9 +34,10 @@ class PostCellImageView: UIImageView {
                     return
                 }
                 guard let imageData = data else { return }
-                let photoImage = UIImage(data: imageData)
-                imageCache[url.absoluteString] = photoImage
-                self.imageOnMainQueue(theImage: photoImage!)
+                if let photoImage = UIImage(data: imageData) {
+                    imageCache[url.absoluteString] = photoImage
+                    self.imageOnMainQueue(theImage: photoImage)
+                }
             }
         }.resume()
     }

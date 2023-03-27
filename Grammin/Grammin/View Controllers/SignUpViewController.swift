@@ -130,19 +130,21 @@ class SignUpViewController: UIViewController {
                     return
                 }
                 
-                let filename = "\(String(describing: user?.email)) \(NSUUID().uuidString)"
+                guard let uid = user?.uid else {
+                    Logger.log("NO UID")
+                    return
+                }
+                
+                //let filename = "\(String(describing: user?.email)) \(NSUUID().uuidString)"
                 //TODO UNWRAP OPTIONAL, ALSO PROFILE PICS > UID IMAGE
                 
-                FirebaseController.uploadImageDataToFirebase(data: uploadData, path: filename, completionString: { (downloadURL) in
+                FirebaseController.uploadImageDataToFirebase(uid: uid, data: uploadData, path: uid, uploadType: .profile, completionString: { (downloadURL) in
                     if downloadURL == nil {
                         Logger.log("--- NO DOWNLOAD URL ---")
                         return
                     }
                     
-                    guard let uid = user?.uid else {
-                        Logger.log("NO UID")
-                        return
-                    }
+                    
                     guard let fcmToken = Messaging.messaging().fcmToken else {
                         Logger.log("NO TOKEN")
                         return
