@@ -21,6 +21,7 @@ struct Post {
     let bodyText : String
     let multiple : Bool
     let timestamp : Date
+    let mediaArray : [String] //Download URLs
     //let animation : Bool //Animate multiple images like GIF (TODO add option in story upload)
     
     //Just UID and not user object?
@@ -31,6 +32,7 @@ struct Post {
         self.mediaType = postDict[mediaTypeKey] as? String ?? ""
         self.bodyText = postDict[postCaptionKey] as? String ?? ""
         self.multiple = postDict[multipleKey] as? Bool ?? false
+        self.mediaArray = postDict[mediaArrayKey] as? [String] ?? []
         let secondsFrom1970 = postDict[createdAt] as? Double ?? 0
         self.timestamp = Date(timeIntervalSince1970: secondsFrom1970)
     }

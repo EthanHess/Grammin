@@ -53,14 +53,14 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     
     //TODO change images
     
-    lazy var likeButton: UIButton = {
+    var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "likeEmpty")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         return button
     }()
     
-    lazy var commentButton: UIButton = {
+    var commentButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "chatEmpty")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
@@ -109,8 +109,23 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: Multiple images / videos setup
+    lazy var multipleScrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        return scrollView
+    }()
+    
+    var viewArrayMultiple: [UIView] = []
+    //Also add page control + 1/count indicator at the top
+    
     var post : Post? {
         didSet {
+            
+            //TODO, add this where necessary
+//            if post?.multiple == true {
+//                handleMultiple()
+//                return
+//            }
             
             guard let postImageUrl = post?.imageURL else { return }
             
@@ -154,9 +169,49 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         self.delegate?.postPopupWithImage(image: theImage)
     }
     
+    //May be better to subclass scroll view but also want to avoid nested delegation
     fileprivate func setUpForMultiple() {
+        guard let thePost = post else { return }
+        //We know "post" exists here
+        multipleScrollView.frame = mainImageView.bounds
+        let size = CGSizeMake(mainImageView.bounds.width * CGFloat(thePost.mediaArray.count), 0)
+        multipleScrollView.contentSize = size
+        addSubview(multipleScrollView)
         
+        clearScrollView()
+        
+        let width = multipleScrollView.frame.size.width
+        let height = multipleScrollView.frame.size.height
+        var xCoord : CGFloat = 0
+        for i in 0..<thePost.mediaArray.count {
+            let mediaItem = thePost.mediaArray[i]
+            if subItemIsImage(mediaItem) == true {
+                let frame = CGRect(x: xCoord, y: 0, width: width, height: height)
+                let imageView = PostCellImageView(frame: frame)
+                imageView.loadImage(urlString: mediaItem)
+                imageView.tag = i //Add gesture eventually
+                viewArrayMultiple.append(imageView)
+                multipleScrollView.addSubview(imageView)
+            } else {
+                //TODO add AVPlayer here for video and monitor when it comes on screen (play / pause)
+            }
+            
+            xCoord += width
+        }
     }
+    
+    fileprivate func clearScrollView() {
+        viewArrayMultiple.removeAll()
+        for subview in multipleScrollView.subviews {
+            subview.removeFromSuperview()
+        }
+    }
+    
+    //Eventually want an object w / enum but just a test
+    fileprivate func subItemIsImage(_ str: String) -> Bool {
+        return str.contains("image")
+    }
+    
     
     fileprivate func gridUpdates() {
         stackView.isHidden = self.gridMode!
@@ -179,6 +234,10 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     
     fileprivate func configureMedia() {
         //Ad player layer for video view
+    }
+    
+    fileprivate func handleMultiple() {
+        
     }
     
     @objc func handleLike() {
