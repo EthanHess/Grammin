@@ -53,6 +53,9 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     
     //TODO change images
     
+    //NOTE: iOS update threw these warnings, fix this (self needs to surely exist here so add target after initialization)
+    
+    //'self' refers to the method 'HomePostCollectionViewCell.self', which may be unexpected
     var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "likeEmpty")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -116,41 +119,25 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     }()
     
     var viewArrayMultiple: [UIView] = []
-    //Also add page control + 1/count indicator at the top
+    lazy var multipleCounterLabel: UILabel = {
+        let cl = UILabel()
+        return cl
+    }()
     
     var post : Post? {
         didSet {
             
-            //TODO, add this where necessary
-//            if post?.multiple == true {
-//                handleMultiple()
-//                return
-//            }
+            UIConfigOnPostSet()
+
+            if post?.multiple == true {
+                //0.25 delay makes sure frame is not 0.0 but probably better to do this in some sort of "set" function rather than hardcoding due to unpredictability.
+                perform(#selector(setUpForMultiple), with: nil, afterDelay: 0.25)
+            } else {
+                multipleScrollView.removeFromSuperview()
+            }
             
             guard let postImageUrl = post?.imageURL else { return }
-            
-            let image = UIImage(named: "likeEmpty") //Check snapshot here or do in main VC?
-            
-            likeButton.setImage(post?.liked == true ? image?.withRenderingMode(.alwaysOriginal) : image?.withRenderingMode(.alwaysOriginal), for: .normal)
             mainImageView.loadImage(urlString: postImageUrl)
-
-            usernameLabel.text = ""
-            usernameLabel.text = post?.postAuthor.username
-            
-            gestureRecognizerForView()
-            
-            //guard let profileImageUrl = post?.postAuthor.profileImageUrl else { return }
-            
-            guard let theUID = post?.postAuthor.uid else { Logger.log(""); return }
-            
-            //Originally had user object attached to post but this may be more efficient
-            
-            //TODO cache
-            FirebaseController.fetchUserWithUID(userID: theUID) { (user) in
-                guard let theUser = user else { return }
-                self.userProfileImageView.loadImage(urlString: theUser.profileImageUrl)
-                self.setAttributedCaption(user: theUser)
-            }
         }
     }
     
@@ -169,18 +156,42 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         self.delegate?.postPopupWithImage(image: theImage)
     }
     
+    //Setup needed for either single or multiple
+    fileprivate func UIConfigOnPostSet() {
+        let image = UIImage(named: "likeEmpty") //Check snapshot here or do in main VC?
+        likeButton.setImage(post?.liked == true ? image?.withRenderingMode(.alwaysOriginal) : image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        usernameLabel.text = ""
+        usernameLabel.text = post?.postAuthor.username
+        
+        gestureRecognizerForView()
+        
+        guard let theUID = post?.postAuthor.uid else { Logger.log(""); return }
+        //Originally had user object attached to post but this may be more efficient
+        
+        //TODO cache
+        FirebaseController.fetchUserWithUID(userID: theUID) { (user) in
+            guard let theUser = user else { return }
+            self.userProfileImageView.loadImage(urlString: theUser.profileImageUrl)
+            self.setAttributedCaption(user: theUser)
+        }
+    }
+    
     //May be better to subclass scroll view but also want to avoid nested delegation
-    fileprivate func setUpForMultiple() {
+    @objc fileprivate func setUpForMultiple() {
         guard let thePost = post else { return }
         //We know "post" exists here
+        let width = mainImageView.frame.size.width
         multipleScrollView.frame = mainImageView.bounds
-        let size = CGSizeMake(mainImageView.bounds.width * CGFloat(thePost.mediaArray.count), 0)
+        let size = CGSizeMake(width * CGFloat(thePost.mediaArray.count), 0)
         multipleScrollView.contentSize = size
-        addSubview(multipleScrollView)
+        multipleScrollView.delegate = self
+        
+        //Just a test, ideally should hide miv and add scroll view to content view, this is not ideal
+        mainImageView.addSubview(multipleScrollView)
         
         clearScrollView()
         
-        let width = multipleScrollView.frame.size.width
         let height = multipleScrollView.frame.size.height
         var xCoord : CGFloat = 0
         for i in 0..<thePost.mediaArray.count {
@@ -190,6 +201,8 @@ class HomePostCollectionViewCell: UICollectionViewCell {
                 let imageView = PostCellImageView(frame: frame)
                 imageView.loadImage(urlString: mediaItem)
                 imageView.tag = i //Add gesture eventually
+                imageView.contentMode = .scaleAspectFit
+                imageView.clipsToBounds = true
                 viewArrayMultiple.append(imageView)
                 multipleScrollView.addSubview(imageView)
             } else {
@@ -234,10 +247,6 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     
     fileprivate func configureMedia() {
         //Ad player layer for video view
-    }
-    
-    fileprivate func handleMultiple() {
-        
     }
     
     @objc func handleLike() {
@@ -335,5 +344,12 @@ class HomePostCollectionViewCell: UICollectionViewCell {
             self.layer.anchorPoint = circularlayoutAttributes.anchorPoint
             self.center.y += (circularlayoutAttributes.anchorPoint.y - 0.5) * self.bounds.height
         }
+    }
+}
+
+
+extension HomePostCollectionViewCell: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //Update counter label here
     }
 }

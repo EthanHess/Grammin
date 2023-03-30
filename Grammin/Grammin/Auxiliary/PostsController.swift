@@ -59,4 +59,9 @@ class PostsController: NSObject {
             completion(completionArray)
         }
     }
+    
+//    static func deletePost(_ uid: String, postID: String, completion: @escaping ((_ success: Bool) -> Void)) {
+//        //MARK: Make sure all associated data is deleted, i.e. storage and comments / likes etc.
+//        //Dispatch group will let us know when it's all done or failed
+//    }
 }
