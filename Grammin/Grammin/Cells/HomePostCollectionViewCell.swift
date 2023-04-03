@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 protocol HomePostCellDelegate : class {
     func commentTapped(post: Post)
@@ -94,6 +95,14 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         return theStack
     }()
     
+    //May want a custom subclass with scrollView + custom view since this could potentially cause problems? Determine after tests.
+    
+    //TODO display if comments
+    lazy var commentsTable : UITableView = {
+        let ct = UITableView()
+        return ct
+    }()
+    
     //TODO: Config AVPlayer and multiple image scheme
     
     //Delegate
@@ -158,8 +167,9 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     
     //Setup needed for either single or multiple
     fileprivate func UIConfigOnPostSet() {
-        let image = UIImage(named: "likeEmpty") //Check snapshot here or do in main VC?
-        likeButton.setImage(post?.liked == true ? image?.withRenderingMode(.alwaysOriginal) : image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        let imageEmpty = UIImage(named: "likeEmpty") //Check snapshot here or do in main VC?
+        let imageFilled = UIImage(named: "likeFilled")
+        likeButton.setImage(post?.liked == true ? imageFilled?.withRenderingMode(.alwaysOriginal) : imageEmpty?.withRenderingMode(.alwaysOriginal), for: .normal)
         
         usernameLabel.text = ""
         usernameLabel.text = post?.postAuthor.username
@@ -196,18 +206,28 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         var xCoord : CGFloat = 0
         for i in 0..<thePost.mediaArray.count {
             let mediaItem = thePost.mediaArray[i]
+            let frame = CGRect(x: xCoord, y: 0, width: width, height: height)
+            let imageView = PostCellImageView(frame: frame)
             if subItemIsImage(mediaItem) == true {
-                let frame = CGRect(x: xCoord, y: 0, width: width, height: height)
-                let imageView = PostCellImageView(frame: frame)
                 imageView.loadImage(urlString: mediaItem)
                 imageView.tag = i //Add gesture eventually
                 imageView.contentMode = .scaleAspectFit
                 imageView.clipsToBounds = true
-                viewArrayMultiple.append(imageView)
-                multipleScrollView.addSubview(imageView)
             } else {
                 //TODO add AVPlayer here for video and monitor when it comes on screen (play / pause)
+                
+                //TODO store player when on screen and play if tapped
+                if let videoURL = URL(string: mediaItem) {
+                    let player = AVPlayer(url: videoURL)
+                    let layer = AVPlayerLayer(player: player)
+                    layer.videoGravity = .resize
+                    layer.frame = imageView.bounds
+                    imageView.layer.addSublayer(layer)
+                }
             }
+            
+            viewArrayMultiple.append(imageView)
+            multipleScrollView.addSubview(imageView)
             
             xCoord += width
         }
@@ -254,10 +274,24 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         delegate?.likeTapped(for: self)
     }
     
+    fileprivate func resetLikeButton(_ likedAlready: Bool) {
+        let imageEmpty = UIImage(named: "likeEmpty") //Check snapshot here or do in main VC?
+        let imageFilled = UIImage(named: "likeFilled")
+        likeButton.setImage(likedAlready == true ? imageEmpty?.withRenderingMode(.alwaysOriginal) : imageFilled?.withRenderingMode(.alwaysOriginal), for: .normal)
+    }
+    
+    fileprivate func likeBounceAnimation() {
+        
+    }
+    
     @objc func handleComment() {
         Logger.log("Commenting")
         guard let post = post else { return }
         delegate?.commentTapped(post: post)
+    }
+    
+    fileprivate func presentCommentField() {
+        
     }
 
     override func awakeFromNib() {

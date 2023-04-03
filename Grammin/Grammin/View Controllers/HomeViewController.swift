@@ -554,20 +554,30 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, HomePostCellDe
         //Can also just pass post via delegate function
         var post = self.posts[indexPath.item]
         
-        if self.currentUser != nil { //If posts exist, won't be so maybe take away?
-            let likeToWrite = [self.currentUser!.uid: post.liked == true ? 0 : 1]
-            fDatabase.child(LikesReference).child(post.postID!).onDisconnectUpdateChildValues(likeToWrite) { (error, ref) in
-                
-                if error != nil {
-                    Logger.log((error?.localizedDescription)!)
-                    return
+        if self.currentUser != nil {
+            LikeController.addOrRemoveLikeToPost(likerUID: self.currentUser!.uid, postID: post.postID!) { success, liked in
+                if success == true {
+                    post.liked = liked
+                    self.posts[indexPath.item] = post
+                    self.collectionView?.reloadItems(at: [indexPath])
                 }
-                
-                post.liked = !post.liked
-                self.posts[indexPath.item] = post
-                self.collectionView?.reloadItems(at: [indexPath])
             }
         }
+        
+//        if self.currentUser != nil { //If posts exist, won't be so maybe take away?
+//            let likeToWrite = [self.currentUser!.uid: post.liked == true ? 0 : 1]
+//            fDatabase.child(LikesReference).child(post.postID!).onDisconnectUpdateChildValues(likeToWrite) { (error, ref) in
+//
+//                if error != nil {
+//                    Logger.log((error?.localizedDescription)!)
+//                    return
+//                }
+//
+//                post.liked = !post.liked
+//                self.posts[indexPath.item] = post
+//                self.collectionView?.reloadItems(at: [indexPath])
+//            }
+//        }
     }
     
     //Layout

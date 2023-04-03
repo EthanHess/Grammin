@@ -17,6 +17,9 @@ let LikesReference = "Likes"
 let StoriesReference = "Stories"
 let StoryViewsReference = "StoryViews" //Who viewed what story (as opposed to posts etc.)
 let ProfileReference = "Profile"
+let PostLikesReference = "PostLikes"
+let UserLikesReference = "UserLikes" //get my likes
+let PostLikeCountReference = "PostLikeCount"
 
 // Notifications
 

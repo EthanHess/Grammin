@@ -22,8 +22,8 @@ class PostsController: NSObject {
                 if snapshot.exists() {
                     for babySnap in snapshot.children.allObjects as! [DataSnapshot] {
                         //Do we want user object attached to post? Maybe remove?
-                        let post = Post(user: User(uid: uid, dictionary: ["":""]), postDict: babySnap.value as! [String : Any])
-                        //TODO set post ID here
+                        var post = Post(user: User(uid: uid, dictionary: ["":""]), postDict: babySnap.value as! [String : Any])
+                        post.postID = babySnap.key
                         completionArray.append(post)
                     }
                     dispatcher.leave()
@@ -45,7 +45,8 @@ class PostsController: NSObject {
         fDatabase.child(PostsReference).child(myUID).observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 for babySnap in snapshot.children.allObjects as! [DataSnapshot] {
-                    let post = Post(user: User(uid: "", dictionary: ["":""]), postDict: babySnap.value as! [String : Any])
+                    var post = Post(user: User(uid: "", dictionary: ["":""]), postDict: babySnap.value as! [String : Any])
+                    post.postID = babySnap.key
                     completionArray.append(post)
                 }
                 dispatcher.leave()
