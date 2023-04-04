@@ -136,7 +136,17 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     var post : Post? {
         didSet {
             
+            guard let postID = post?.postID else {
+                Logger.log("Something went wrong")
+                return
+            }
+            
             UIConfigOnPostSet()
+            LikeController.postLiked(likerUID: post!.postAuthor.uid, postID: postID) { liked in
+                DispatchQueue.main.async {
+                    self.configureLike(liked: liked)
+                }
+            }
 
             if post?.multiple == true {
                 //0.25 delay makes sure frame is not 0.0 but probably better to do this in some sort of "set" function rather than hardcoding due to unpredictability.
@@ -165,12 +175,14 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         self.delegate?.postPopupWithImage(image: theImage)
     }
     
-    //Setup needed for either single or multiple
-    fileprivate func UIConfigOnPostSet() {
+    fileprivate func configureLike(liked: Bool) {
         let imageEmpty = UIImage(named: "likeEmpty") //Check snapshot here or do in main VC?
         let imageFilled = UIImage(named: "likeFilled")
-        likeButton.setImage(post?.liked == true ? imageFilled?.withRenderingMode(.alwaysOriginal) : imageEmpty?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
+        likeButton.setImage(liked == true ? imageFilled?.withRenderingMode(.alwaysOriginal) : imageEmpty?.withRenderingMode(.alwaysOriginal), for: .normal)
+    }
+    
+    //Setup needed for either single or multiple
+    fileprivate func UIConfigOnPostSet() {
         usernameLabel.text = ""
         usernameLabel.text = post?.postAuthor.username
         
@@ -202,6 +214,8 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         
         clearScrollView()
         
+        //MARK: NOTE Should load images / video when appears onscreen, not efficient at all to do this but just seeing what it looked like
+        
         let height = multipleScrollView.frame.size.height
         var xCoord : CGFloat = 0
         for i in 0..<thePost.mediaArray.count {
@@ -216,7 +230,7 @@ class HomePostCollectionViewCell: UICollectionViewCell {
             } else {
                 //TODO add AVPlayer here for video and monitor when it comes on screen (play / pause)
                 
-                //TODO store player when on screen and play if tapped
+                //TODO start player when on screen and play if tapped
                 if let videoURL = URL(string: mediaItem) {
                     let player = AVPlayer(url: videoURL)
                     let layer = AVPlayerLayer(player: player)
@@ -378,6 +392,12 @@ class HomePostCollectionViewCell: UICollectionViewCell {
             self.layer.anchorPoint = circularlayoutAttributes.anchorPoint
             self.center.y += (circularlayoutAttributes.anchorPoint.y - 0.5) * self.bounds.height
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        //Generally want to cancel the network call when cell scrolls offscreen (i.e. user is scrolling really fast and if calls aren't cancelled table could get laggy / slow)
     }
 }
 

@@ -98,4 +98,11 @@ class LikeController: NSObject {
     static func updatePostLikeCount(count: Int) {
         
     }
+    
+    static func postLiked(likerUID: String, postID: String, completion: @escaping ((_ liked: Bool) -> Void)) {
+        let postLikesRef = fDatabase.child(PostLikesReference).child(postID).child(likerUID)
+        postLikesRef.observeSingleEvent(of: .value) { plShapshot in
+            completion(plShapshot.exists())
+        }
+    }
 }
