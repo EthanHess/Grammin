@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import FirebaseStorage
 
 protocol HomePostCellDelegate : class {
     func commentTapped(post: Post)
@@ -18,8 +19,10 @@ protocol HomePostCellDelegate : class {
 
 class HomePostCollectionViewCell: UICollectionViewCell {
     
-    //Subviews
+    //TODO add and cancel / only load when on screen for smooth table
+    var downloadTasks : [StorageDownloadTask] = []
     
+    //Subviews
     let userProfileImageView : PostCellImageView = {
         let iv = PostCellImageView()
         iv.image = UIImage(named: "userFemaleBrunette")
@@ -398,6 +401,8 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         //Generally want to cancel the network call when cell scrolls offscreen (i.e. user is scrolling really fast and if calls aren't cancelled table could get laggy / slow)
+        
+        //Can have task property and cancel task (or tasks if multiple when cell dequeues)
     }
 }
 

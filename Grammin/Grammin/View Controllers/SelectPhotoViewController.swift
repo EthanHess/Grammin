@@ -257,7 +257,17 @@ class SelectPhotoViewController: UIViewController {
     //Will now go to filter VC
     @objc fileprivate func nextHandler() {
         let sharePhotoController = SharePhotoViewController()
-        sharePhotoController.itemsToPost = chosenItems
+        if chosenItems.count == 0 {
+            GlobalFunctions.presentAlert(title: "Please choose media to post", text: "", fromVC: self)
+        } else if chosenItems.count == 1 {
+            if chosenItems[0].media == "image" {
+                sharePhotoController.selectedImage = chosenItems[0].image
+            } else {
+                GlobalFunctions.presentAlert(title: "Single video not supported yet", text: "", fromVC: self)
+            }
+        } else {
+            sharePhotoController.itemsToPost = chosenItems
+        }
         navigationController?.pushViewController(sharePhotoController, animated: true)
     }
     
