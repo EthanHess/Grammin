@@ -16,7 +16,7 @@ class SharePhotoViewController: UIViewController {
     //Properties
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .red
+        iv.backgroundColor = .lightGray
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         return iv
@@ -40,15 +40,48 @@ class SharePhotoViewController: UIViewController {
         }
     }
     
+    let loader : LoadingView = {
+        let lv = LoadingView()
+        return lv
+    }()
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
 
+    //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         uiConfig()
+        addLoader()
+    }
+    
+    //MARK: Loader funcs.
+    fileprivate func addLoader() {
+        loader.frame = loaderFrame()
+        loader.isHidden = true
+        view.addSubview(loader)
+    }
+    
+    fileprivate func loaderStartStopHandler(_ start: Bool) {
+        if start == false {
+            self.loader.stopAnimation()
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                self.loader.isHidden = true
+            }
+        } else {
+            loader.startAnimation()
+            loader.isHidden = false
+            loader.addShadow(.black)
+        }
+    }
+    
+    fileprivate func loaderFrame() -> CGRect {
+        let vw = view.frame.size.width
+        let vh = view.frame.size.height
+        return CGRect(x: vw / 4, y: vh / 8, width: vw / 2, height: vh / 4)
     }
     
     fileprivate func uiConfig() {
@@ -145,7 +178,7 @@ class SharePhotoViewController: UIViewController {
 //            }
 //            dispatchGroup.leave()
 //        }
-        
+        loaderStartStopHandler(true)
         for item in itemsToPost {
             if item.media == "image" {
                 dispatchGroup.enter()
@@ -175,6 +208,7 @@ class SharePhotoViewController: UIViewController {
         //May want a struct with downloadURL as property to sync with media type although we can currently grab it from download URL str.
         
         dispatchGroup.notify(queue: .main) {
+            self.loaderStartStopHandler(false)
             if downloadURLSForPost.isEmpty {
                 //Something went wrong, log error
                 return

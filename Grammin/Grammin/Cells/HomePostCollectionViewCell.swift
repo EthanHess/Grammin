@@ -14,6 +14,7 @@ protocol HomePostCellDelegate : class {
     func commentTapped(post: Post)
     func likeTapped(for cell: HomePostCollectionViewCell)
     func postPopupWithImage(image: UIImage)
+    func presentOptionsForPost(post: Post)
     //TODO add video func. for this
 }
 
@@ -301,7 +302,7 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         
     }
     
-    @objc func handleComment() {
+    @objc private func handleComment() {
         Logger.log("Commenting")
         guard let post = post else { return }
         delegate?.commentTapped(post: post)
@@ -309,6 +310,11 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     
     fileprivate func presentCommentField() {
         
+    }
+    
+    @objc private func presentOptionsHandler() {
+        guard let post = post else { return }
+        delegate?.presentOptionsForPost(post: post)
     }
 
     override func awakeFromNib() {
@@ -359,6 +365,8 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         
         optionsButton.anchor(top: topAnchor, left: nil, bottom: mainImageView.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 44, height: 0)
         
+        optionsButton.addTarget(self, action: #selector(presentOptionsHandler), for: .touchUpInside)
+        
         mainImageView.anchor(top: userProfileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         mainImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
         
@@ -381,6 +389,8 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         addSubview(bookmarkButton)
         bookmarkButton.anchor(top: mainImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 40, height: 50)
     }
+    
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

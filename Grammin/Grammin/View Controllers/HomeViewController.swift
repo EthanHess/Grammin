@@ -542,7 +542,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, HomePostCellDe
         
     }
     
-    //Main cell delegate
+    //MARK: Main cell delegate
     func commentTapped(post: Post) {
         //Go to comments VC
     }
@@ -578,6 +578,32 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, HomePostCellDe
 //                self.collectionView?.reloadItems(at: [indexPath])
 //            }
 //        }
+    }
+    
+    func presentOptionsForPost(post: Post) {
+        let alertViewController = UIAlertController(title: "Post Options", message: "Choose one of the following", preferredStyle: .alert)
+        
+        let share = UIAlertAction(title: "Share", style: .default) { action in
+            print("Share post tapped \(post.postID ?? "")")
+        }
+        
+        let delete = UIAlertAction(title: "Delete", style: .default) { action in
+            PostsController.deletePost(post.postAuthor.uid, postID: post.postID!) { success in
+                if success == true {
+                    self.refresh()
+                } else {
+                    print("Something went wrong deleting post")
+                }
+            }
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alertViewController.addAction(share)
+        alertViewController.addAction(delete)
+        alertViewController.addAction(cancel)
+        
+        self.present(alertViewController, animated: true)
     }
     
     //Layout

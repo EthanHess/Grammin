@@ -85,6 +85,10 @@
 		27749FB923E656E600355B68 /* MainFeedOptionsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27749FB823E656E500355B68 /* MainFeedOptionsContainer.swift */; };
 		277ADEB025FED86B001A5B42 /* SelectPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277ADEAF25FED86B001A5B42 /* SelectPhotoViewController.swift */; };
 		278445AB23CEC80900577E38 /* ChatUserRequestChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278445AA23CEC80900577E38 /* ChatUserRequestChoiceView.swift */; };
+		27887A3629EDEF7800E8BE25 /* GradientContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27887A3229EDEF7700E8BE25 /* GradientContainer.swift */; };
+		27887A3729EDEF7800E8BE25 /* DotsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27887A3329EDEF7700E8BE25 /* DotsContainer.swift */; };
+		27887A3829EDEF7800E8BE25 /* Pinwheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27887A3429EDEF7700E8BE25 /* Pinwheel.swift */; };
+		27887A3929EDEF7800E8BE25 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27887A3529EDEF7700E8BE25 /* LoadingView.swift */; };
 		278EFE59242D971500C90B08 /* ChosenChatParticipantsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278EFE58242D971500C90B08 /* ChosenChatParticipantsContainer.swift */; };
 		278F57612952648E00BA6DAE /* StoryWatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278F57602952648E00BA6DAE /* StoryWatchViewController.swift */; };
 		2790EB16220A5E6100FBDC5C /* StoryUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2790EB15220A5E6100FBDC5C /* StoryUploadViewController.swift */; };
@@ -208,6 +212,10 @@
 		27749FB823E656E500355B68 /* MainFeedOptionsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedOptionsContainer.swift; sourceTree = "<group>"; };
 		277ADEAF25FED86B001A5B42 /* SelectPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoViewController.swift; sourceTree = "<group>"; };
 		278445AA23CEC80900577E38 /* ChatUserRequestChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUserRequestChoiceView.swift; sourceTree = "<group>"; };
+		27887A3229EDEF7700E8BE25 /* GradientContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientContainer.swift; sourceTree = "<group>"; };
+		27887A3329EDEF7700E8BE25 /* DotsContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotsContainer.swift; sourceTree = "<group>"; };
+		27887A3429EDEF7700E8BE25 /* Pinwheel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pinwheel.swift; sourceTree = "<group>"; };
+		27887A3529EDEF7700E8BE25 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		278EFE58242D971500C90B08 /* ChosenChatParticipantsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChosenChatParticipantsContainer.swift; sourceTree = "<group>"; };
 		278F57602952648E00BA6DAE /* StoryWatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryWatchViewController.swift; sourceTree = "<group>"; };
 		2790EB15220A5E6100FBDC5C /* StoryUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryUploadViewController.swift; sourceTree = "<group>"; };
@@ -285,6 +293,7 @@
 		27566C7720B3823500ACE668 /* Grammin */ = {
 			isa = PBXGroup;
 			children = (
+				27887A3A29EDEF8200E8BE25 /* Loader */,
 				276F2B3320B76F0500303E30 /* Camera Files */,
 				276F2B3420B76F2100303E30 /* Auxiliary */,
 				27C8ED2E20D19E4000DB4EC4 /* Custom Views */,
@@ -397,6 +406,17 @@
 				274AC70824EDEE7F00FF685F /* Group.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		27887A3A29EDEF8200E8BE25 /* Loader */ = {
+			isa = PBXGroup;
+			children = (
+				27887A3329EDEF7700E8BE25 /* DotsContainer.swift */,
+				27887A3229EDEF7700E8BE25 /* GradientContainer.swift */,
+				27887A3529EDEF7700E8BE25 /* LoadingView.swift */,
+				27887A3429EDEF7700E8BE25 /* Pinwheel.swift */,
+			);
+			path = Loader;
 			sourceTree = "<group>";
 		};
 		27C8ED2E20D19E4000DB4EC4 /* Custom Views */ = {
@@ -710,6 +730,7 @@
 				2739B60321D9D20A009815FD /* StoriesHeaderCollectionViewCell.swift in Sources */,
 				278445AB23CEC80900577E38 /* ChatUserRequestChoiceView.swift in Sources */,
 				27403149243189E20063EBB8 /* ThemePickerSubview.swift in Sources */,
+				27887A3629EDEF7800E8BE25 /* GradientContainer.swift in Sources */,
 				2748CF1E24567B5700510E7F /* StoryScrollOptionsContainer.swift in Sources */,
 				273B097621D5C16F0025202B /* FollowingController.swift in Sources */,
 				2739B5FD21D84DFD009815FD /* MyProfileHeaderCell.swift in Sources */,
@@ -718,6 +739,7 @@
 				272B0D3D23C00506001807A7 /* ChatCollectionViewCell.swift in Sources */,
 				273B104C21DDCBC9001886BF /* MainFeedViewController.swift in Sources */,
 				276F2B3020B74C9B00303E30 /* Extensions.swift in Sources */,
+				27887A3929EDEF7800E8BE25 /* LoadingView.swift in Sources */,
 				276F2B2420B6294500303E30 /* UserProfileCollectionViewController.swift in Sources */,
 				274740A92558674000668501 /* FollowDisplayTypeContainer.swift in Sources */,
 				27A278BD20B616BA0054607A /* HomeViewController.swift in Sources */,
@@ -727,7 +749,9 @@
 				27294B3E23CBFAD20029625C /* SavedItemsCollectionViewController.swift in Sources */,
 				27404A7F2453DDA300AD334A /* StoryTextContainer.swift in Sources */,
 				2736F8FE21BE051700B49001 /* SearchUserCell.swift in Sources */,
+				27887A3829EDEF7800E8BE25 /* Pinwheel.swift in Sources */,
 				274AC70B24F205CC00FF685F /* FirebaseStorageController.swift in Sources */,
+				27887A3729EDEF7800E8BE25 /* DotsContainer.swift in Sources */,
 				273B104A21DD5BA6001886BF /* StoryView.swift in Sources */,
 				276F2B3E20B775AA00303E30 /* LayoutAttributes.swift in Sources */,
 				27C8ED2D20D182F200DB4EC4 /* SignUpContainerView.swift in Sources */,
