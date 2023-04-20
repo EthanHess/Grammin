@@ -231,6 +231,13 @@ class HomePostCollectionViewCell: UICollectionViewCell {
                 imageView.tag = i //Add gesture eventually
                 imageView.contentMode = .scaleAspectFit
                 imageView.clipsToBounds = true
+                
+                //Test
+//                self.downloadFromFirebaseWithURL(mediaItem) { image in
+//                    if image != nil {
+//                        imageView.image = image //TODO add network call to UIImageView Subclass
+//                    }
+//                }
             } else {
                 //TODO add AVPlayer here for video and monitor when it comes on screen (play / pause)
                 
@@ -413,6 +420,16 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         //Generally want to cancel the network call when cell scrolls offscreen (i.e. user is scrolling really fast and if calls aren't cancelled table could get laggy / slow)
         
         //Can have task property and cancel task (or tasks if multiple when cell dequeues)
+        cancelActiveTasks()
+    }
+    
+    //Can also look into prefetching, another way to optimize performance for large datasets in a table or collection view
+    private func cancelActiveTasks() {
+        if downloadTasks.count > 0 {
+            for task in downloadTasks {
+                task.cancel()
+            }
+        }
     }
 }
 
@@ -420,5 +437,26 @@ class HomePostCollectionViewCell: UICollectionViewCell {
 extension HomePostCollectionViewCell: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //Update counter label here
+    }
+    
+    //MARK: Firebase download (instead of URL session in image subclass)
+    private func downloadFromFirebaseWithURL(_ urlString: String, completion: @escaping (_ image: UIImage?) -> Void) {
+        let picRef = fStorage.child(urlString)
+        let maxSize = 1 * 1024 * 1024
+        let task = picRef.getData(maxSize: Int64(maxSize)) { data, error in
+            if error != nil {
+                print("\(error!.localizedDescription)")
+                completion(nil)
+            } else {
+                guard let theData = data else {
+                    Logger.log("No data")
+                    completion(nil)
+                    return
+                }
+                let imageFromData = UIImage(data: theData)
+                completion(imageFromData)
+            }
+        }
+        downloadTasks.append(task)
     }
 }
