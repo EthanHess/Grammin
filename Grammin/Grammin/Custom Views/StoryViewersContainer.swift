@@ -114,7 +114,12 @@ extension StoryViewersContainer: TableFunctions {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let theCell = tableView.dequeueReusableCell(withIdentifier: "theCell") as! StoryViewerCell
+        
+        //Safer than ! if for whatever reason since dequeueReusable is optional return type. TODO: Add to Collection delegates and not just Table
+        
+        guard let theCell = tableView.dequeueReusableCell(withIdentifier: "theCell") as? StoryViewerCell else {
+            return StoryViewerCell(style: .default, reuseIdentifier: "theCell")
+        }
         
         let idAtIndexPath = viewerIDs[indexPath.row]
         theCell.subviewConfig()

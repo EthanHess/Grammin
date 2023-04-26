@@ -216,6 +216,8 @@ class HomePostCollectionViewCell: UICollectionViewCell {
         //Just a test, ideally should hide miv and add scroll view to content view, this is not ideal
         mainImageView.addSubview(multipleScrollView)
         
+        //TODO fix image resolution for multiple (they look bad)
+        
         clearScrollView()
         
         //MARK: NOTE Should load images / video when appears onscreen, not efficient at all to do this but just seeing what it looked like

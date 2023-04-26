@@ -57,7 +57,10 @@ extension SearchUserViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let theCell = tableView.dequeueReusableCell(withIdentifier: cellID) as! UserSearchTableViewCell
+        guard let theCell = tableView.dequeueReusableCell(withIdentifier: cellID) as? UserSearchTableViewCell else {
+            return UserSearchTableViewCell(style: .default, reuseIdentifier: cellID)
+        }
+        
         return theCell
     }
 }

@@ -373,7 +373,10 @@ extension ChatDetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let theCell = tableView.dequeueReusableCell(withIdentifier: "message_cell") as! MessageTableViewCell
+        
+        guard let theCell = tableView.dequeueReusableCell(withIdentifier: "message_cell") as? MessageTableViewCell else {
+            return MessageTableViewCell(style: .default, reuseIdentifier: "message_cell")
+        }
         
         let theMessage = self.messages[indexPath.row]
         theCell.configureWithMessage(message: theMessage)
