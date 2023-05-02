@@ -22,6 +22,7 @@ class HomePostCollectionViewCell: UICollectionViewCell {
     
     //TODO add and cancel / only load when on screen for smooth table
     var downloadTasks : [StorageDownloadTask] = []
+    var urlSessionTasks : [URLSessionDataTask] = []
     
     //Subviews
     let userProfileImageView : PostCellImageView = {
@@ -237,9 +238,19 @@ class HomePostCollectionViewCell: UICollectionViewCell {
                 //Test
 //                self.downloadFromFirebaseWithURL(mediaItem) { image in
 //                    if image != nil {
-//                        imageView.image = image //TODO add network call to UIImageView Subclass
+//                        imageView.image = image  Subclass
 //                    }
 //                }
+                
+                //TODO add network call to UIImageView with cancellable (for when user scrolls away or changes scroll index)
+                
+                self.downloadFromFirebaseWithURLSession(mediaItem) { image in
+                    if image != nil {
+                        DispatchQueue.main.async {
+                            imageView.image = image
+                        }
+                    }
+                }
             } else {
                 //TODO add AVPlayer here for video and monitor when it comes on screen (play / pause)
                 
@@ -432,6 +443,12 @@ class HomePostCollectionViewCell: UICollectionViewCell {
                 task.cancel()
             }
         }
+        
+        if urlSessionTasks.count > 0 {
+            for theTask in urlSessionTasks {
+                theTask.cancel()
+            }
+        }
     }
 }
 
@@ -447,7 +464,7 @@ extension HomePostCollectionViewCell: UIScrollViewDelegate {
         let maxSize = 1 * 1024 * 1024
         let task = picRef.getData(maxSize: Int64(maxSize)) { data, error in
             if error != nil {
-                print("\(error!.localizedDescription)")
+                print("Download error Home cell \(error!.localizedDescription)")
                 completion(nil)
             } else {
                 guard let theData = data else {
@@ -460,5 +477,30 @@ extension HomePostCollectionViewCell: UIScrollViewDelegate {
             }
         }
         downloadTasks.append(task)
+    }
+    
+    private func downloadFromFirebaseWithURLSession(_ urlString: String, completion: @escaping (_ image: UIImage?) -> Void) {
+        
+        if let cached = imageCache[urlString] {
+            completion(cached)
+            return //no need to proceed
+        }
+        
+        guard let url = URL(string: urlString) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if error != nil {
+                Logger.log("Error --- \(error!.localizedDescription)!")
+                completion(nil)
+            } else {
+                guard let imageData = data else { return }
+                if let photoImage = UIImage(data: imageData) {
+                    imageCache[url.absoluteString] = photoImage
+                    completion(photoImage)
+                }
+            }
+        }
+        task.resume()
+        urlSessionTasks.append(task)
     }
 }
